@@ -75,12 +75,10 @@ object MonadApp extends App {
       ma.flatMap { a => f(a) }
   }
   
-  //println( listMonad.replicateMe(5000, Some('a')))
-  //println( listMonad.sequence(List(Some('a'),Some('b'))))  
+  println( optionMonad.replicateMe(5000, Some('a')))
+  println( optionMonad.sequence(List(Some('a'),Some('b'))))  
   println( optionMonad.filterM2(List(1,2,3,4))(a => Option[Boolean](a > 2)))
-  println( optionMonad.filterM3(List(1,2,3,4))(a => Option[Boolean](a > 2)))
- 
-  //println( optionMonad.join(Option(Option(1))))
-  
-  //println( listMonad.join(List(List(1,2,4,5))))
+  println( optionMonad.filterM3(List(1,2,3,4))(a => Option[Boolean](a > 2))) 
+  println( optionMonad.join(Option(Option(1))))  
+  println( listMonad.join(List(List(1,2,4,5))))
 }
