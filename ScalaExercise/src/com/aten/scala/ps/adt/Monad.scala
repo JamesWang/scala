@@ -61,6 +61,9 @@ trait Monad[F[_]] {
   
   def join[A]( mma:F[F[A]] ) : F[A] =
     flatMap(mma)(fa => map(fa)(a => a ))
+    
+  def compose[A,B,C]( f : A=>F[B] , g: B=> F[C] ) : A=>F[C] = 
+    a => flatMap(f(a))(b=>g(b))
 }
 
 object MonadApp extends App {
@@ -81,4 +84,7 @@ object MonadApp extends App {
   println( optionMonad.filterM3(List(1,2,3,4))(a => Option[Boolean](a > 2))) 
   println( optionMonad.join(Option(Option(1))))  
   println( listMonad.join(List(List(1,2,4,5))))
+  
+  //optionMonad.compose(optionMonad.join[Int],optionMonad.unit[Int])(Option(Option(1)))
+      
 }
