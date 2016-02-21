@@ -35,3 +35,4 @@ object SelfTypeAnnotation extends App{
   FinderSystem.findProduct("Laptop")
   FinderSystem.show( f=>println(f.getClass().getPackage) )
 }
+
