@@ -1,7 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="output" path="bin"/>
+  <classpathentry kind="src" path="src/main/scala"/>
+  <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.postgresql/postgresql/jars/postgresql-9.3-1102-jdbc41.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.apache.commons/commons-dbcp2/jars/commons-dbcp2-2.1.1.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.apache.commons/commons-pool2/jars/commons-pool2-2.4.2.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.2.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scala-lang.modules/scala-async_2.11/bundles/scala-async_2.11-0.9.5.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/com.typesafe.akka/akka-actor_2.11/jars/akka-actor_2.11-2.4.2.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/com.typesafe/config/bundles/config-1.3.0.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scala-lang.modules/scala-java8-compat_2.11/bundles/scala-java8-compat_2.11-0.7.0.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.specs2/specs2-core_2.11/jars/specs2-core_2.11-3.7.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.specs2/specs2-matcher_2.11/jars/specs2-matcher_2.11-3.7.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.specs2/specs2-common_2.11/jars/specs2-common_2.11-3.7.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.spire-math/kind-projector_2.11/jars/kind-projector_2.11-0.7.1.jar"/>
+  <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scala-lang.modules/scala-xml_2.11/bundles/scala-xml_2.11-1.0.4.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.11/bundles/scala-parser-combinators_2.11-1.0.4.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scalaz/scalaz-core_2.11/bundles/scalaz-core_2.11-7.2.0.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scalaz/scalaz-effect_2.11/bundles/scalaz-effect_2.11-7.2.0.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scalaz/scalaz-concurrent_2.11/bundles/scalaz-concurrent_2.11-7.2.0.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scalaz.stream/scalaz-stream_2.11/bundles/scalaz-stream_2.11-0.8.jar"/>
+  <classpathentry kind="lib" path="/Users/james/.ivy2/cache/org.scodec/scodec-bits_2.11/bundles/scodec-bits_2.11-1.0.9.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="output" path="bin"/>
 </classpath>
