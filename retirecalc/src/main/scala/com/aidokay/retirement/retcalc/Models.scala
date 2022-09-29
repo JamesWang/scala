@@ -52,8 +52,8 @@ object Models {
   }
 
   def main(args: Array[String]): Unit = {
-    //fromResource("sp500.tsv").foreach(println)
+    fromResource("sp500.tsv").foreach(println)
     //loadFrom.run("sp500.tsv").foreach(println)
-    InflationData.loadFrom.run("cpi.tsv").foreach(println)
+    //InflationData.loadFrom.run("cpi.tsv").foreach(println)
   }
 }
