@@ -4,21 +4,17 @@ import cats.data.Reader
 import cats.effect.IO
 import com.aidokay.retirement.csv.Decoder
 import com.aidokay.retirement.csv.Decoder.{FieldDecoder, Row, RowDecoder, main}
+import com.aidokay.retirement.loader.DataLoader
+import com.aidokay.retirement.loader.DataLoader.{loadFor, loadedAs}
 import com.aidokay.retirement.retcalc.Models.EquityData.{fromResource, loadFrom}
-import com.aidokay.retirement.retcalc.Models.RowExtender
 
 import scala.annotation.tailrec
 import scala.deriving.Mirror.ProductOf
 import scala.io.Source
 import scala.util.Using
 
-object Models extends RowExtender {
+object Models {
 
-  trait RowExtender {
-    extension (row: Row)
-      def as[T](using p: ProductOf[T], d: RowDecoder[p.MirroredElemTypes]): T =
-        p.fromProduct(d.decode(row))
-  }
   case class RetCalcParams(nbOfMonthsInRetirement: Int, netIncome: Int, currentExpenses: Int, initialCapital: Double)
 
   case class EquityData(monthId: String, value: Double, annualDividend: Double) {
@@ -40,22 +36,7 @@ object Models extends RowExtender {
       s"Cannot get the return for month $month. Accepted range: 0 to $maximum")
   }
 
-  //purely scala
-  def loadedAs[T](resource: String)(using p: ProductOf[T], d: RowDecoder[p.MirroredElemTypes]): Vector[T] =
-    Using.resource(Source.fromResource(resource)) { r =>
-      r.getLines().drop(1).filter(_.trim.nonEmpty).map { line =>
-        line
-          .split("\t")
-          .toList
-          .as[T]
-      }.toVector
-    }
-
-  ///Using Reader monad
-  def loadFor[P](using p: ProductOf[P], d: RowDecoder[p.MirroredElemTypes]): Reader[String, Vector[P]] = Reader { resource =>
-    DataLoader.load.run(resource).map(_.as[P])
-  }
-
+  
   object EquityData {
     def fromResource(resource: String): Vector[EquityData] = loadedAs[EquityData](resource)
 

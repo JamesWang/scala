@@ -6,3 +6,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "Scala3Enhance"
   )
+
+libraryDependencies ++= Seq(
+  "org.typelevel" %% "cats-core" % "2.8.0"
+)
+

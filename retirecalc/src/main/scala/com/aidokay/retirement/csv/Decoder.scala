@@ -8,6 +8,10 @@ import scala.deriving.Mirror.ProductOf
 object Decoder {
   type Row = List[String]
 
+  extension (row: Row)
+    def as[T](using p: ProductOf[T], d: RowDecoder[p.MirroredElemTypes]): T =
+      p.fromProduct(d.decode(row))
+
   trait RowDecoder[A <: Tuple]:
     def decode(a: Decoder.Row): A
 
