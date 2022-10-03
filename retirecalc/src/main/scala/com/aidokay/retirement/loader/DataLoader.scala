@@ -42,5 +42,4 @@ object DataLoader {
     ///Using Reader monad
   def loadFor[P](using p: ProductOf[P], d: RowDecoder[p.MirroredElemTypes]): Reader[String, Vector[P]] =
     Reader {DataLoader.load.run(_).map(_.as[P])}
-
 }
