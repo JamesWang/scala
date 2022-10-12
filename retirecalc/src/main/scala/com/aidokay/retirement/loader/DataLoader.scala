@@ -1,7 +1,7 @@
 package com.aidokay.retirement.loader
 
 import cats.data.Reader
-import cats.effect.{IO, Resource}
+import cats.effect.{IO, Resource, Sync}
 import com.aidokay.retirement.csv.Decoder.RowDecoder
 
 import scala.deriving.Mirror.ProductOf
@@ -19,18 +19,25 @@ object DataLoader {
   def sSplit(line: String, delim: String="\\t"): List[String] =
     line.split(delim).toList
 
-  private def mapSplit = (rs: BufferedSource) => mapSplitApply[List[String]](rs.getLines())(sSplit(_))
+  private def mapSplit =  (rs: BufferedSource) => mapSplitApply[List[String]](rs.getLines())(sSplit(_))
+  def mapThenSplit[F[_]: Sync](): BufferedSource => F[Vector[List[String]]] = Sync[F].map(mapSplit)
 
   def load: Reader[String, Vector[List[String]]] = Reader{rs =>
     Using.resource(Source.fromResource(rs))(mapSplit)
   }
 
-  def loadWithIO(resource: String): IO[Vector[List[String]]] =
+  def loadWithIO1(resource: String): IO[Vector[List[String]]] =
     Resource.fromAutoCloseable(
       IO {Source.fromResource(resource)}
     ).use {
       rs => IO{mapSplit(rs)}
     }
+
+  def loadWithIO[F[_]: Sync](resource: String): Resource[F, BufferedSource] =
+    Resource.make(Sync[F].pure(Source.fromResource(resource)))(
+      rs => Sync[F].blocking(rs.close())
+    )
+
 
   //purely scala
   def loadedAs[T](resource: String, delim: String = "\t")(using p: ProductOf[T], d: RowDecoder[p.MirroredElemTypes]): Vector[T] =
