@@ -35,7 +35,7 @@ object FindMaxDiff {
       case h::t if Ordering[T].compare(h, max) > 0 => findMaxDiff(h, diff, t, pair)
       case h::t =>
         val nMaxDiff = Numeric[T].max(diff, Numeric[T].minus(max, h))
-        findMaxDiff(max, nMaxDiff, t, (if(Numeric[T].compare(nMaxDiff, diff) != 0) then (h, max) else pair))
+        findMaxDiff(max, nMaxDiff, t, if Numeric[T].compare(nMaxDiff, diff) != 0 then (h, max) else pair)
 
     val rev = list.reverse
     findMaxDiff(min, rev.head, rev.tail, (min, min))
