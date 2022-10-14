@@ -1,4 +1,4 @@
-##Algo in Scala
+###Algo in Scala
 
 FindMaxDiff from a List with constraint:
  - Bigger number should have bigger index in the List
