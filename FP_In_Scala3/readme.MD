@@ -31,4 +31,4 @@ remaining numbers in the List
 
             it will show root and root-test
   
-After this setup, IDE(Metals or Intellij) will use it to compile and will be much faster
+After this setup,compile will be much faster
