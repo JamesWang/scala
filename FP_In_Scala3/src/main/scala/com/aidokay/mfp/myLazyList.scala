@@ -1,4 +1,4 @@
-package com.aidokay.fp.ch5
+package com.aidokay.mfp
 
 import scala.annotation.tailrec
 
@@ -11,7 +11,7 @@ object myLazyList {
   case class Cons[+A](h: () => A, t: () => MLazyStream[A]) extends MLazyStream[A]
 
   trait StreamExtender:
-    extension [A] (stream: MLazyStream[A])
+    extension[A] (stream: MLazyStream[A])
       def headOption: Option[A] = stream match
         case Empty => None
         case Cons(h, _) => Option(h())
@@ -30,8 +30,9 @@ object myLazyList {
           else {
             tail match
               case Empty => Empty
-              case Cons(h, tl) => Cons(h, ()=>tk(m-1, tl()))
+              case Cons(h, tl) => Cons(h, () => tk(m - 1, tl()))
           }
+
         tk(n, stream)
 
       def takeWhile(pf: A => Boolean): MLazyStream[A] =
@@ -51,7 +52,8 @@ object myLazyList {
             case Empty => Empty
             case Cons(h, tail) =>
               println(s"dropping ${h()}, remaining: ${tail().toList}")
-              doDrop(m-1, tail())
+              doDrop(m - 1, tail())
+
         doDrop(n, stream)
 
   object MLazyStream:
