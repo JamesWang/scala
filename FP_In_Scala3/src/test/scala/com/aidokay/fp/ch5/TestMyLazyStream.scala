@@ -1,6 +1,6 @@
 package com.aidokay.fp.ch5
 
-import com.aidokay.fp.ch5.myLazyList.{MLazyStream, StreamExtender}
+import com.aidokay.mfp.myLazyList.{MLazyStream, StreamExtender}
 import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
