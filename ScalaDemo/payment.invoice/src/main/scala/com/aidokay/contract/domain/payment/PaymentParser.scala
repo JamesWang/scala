@@ -4,10 +4,12 @@ import com.aidokay.contract.domain.{Lookup, PDFParser}
 import com.aidokay.contract.domain.model.{Payment, PdfValue}
 import com.aidokay.contract.domain.payment.PaymentField._
 
+import scala.language.implicitConversions
+
 object PaymentParser extends PDFParser[PaymentField.Value, Payment] {
   implicit def valueToPaymentLookup(x: Value): Lookup[Value] = x.asInstanceOf[PaymentLookup[Value]]
   override def sourceValues(): Map[PaymentField.Value, Int] =
-    PaymentField.values.toSeq.map(lp ⇒ lp → lp.getIndex).toMap
+    PaymentField.values.toSeq.map(lp ⇒ lp -> lp.getIndex).toMap
   override val skip = 1
 
   override def mapping(data: Map[String, PdfValue]): Payment = {

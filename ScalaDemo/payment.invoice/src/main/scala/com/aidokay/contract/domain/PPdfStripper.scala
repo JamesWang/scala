@@ -25,6 +25,7 @@ class PPdfStripper extends PDFTextStripper {
           } else {
             ("","")
           }
+        case None => ("", "")
       }
     }
 }

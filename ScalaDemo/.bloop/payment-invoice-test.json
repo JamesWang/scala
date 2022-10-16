@@ -1,0 +1,478 @@
+{
+    "version": "1.4.0",
+    "project": {
+        "name": "payment-invoice-test",
+        "directory": "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice",
+        "workspaceDir": "C:\\dev\\github\\scala\\ScalaDemo",
+        "sources": [
+            "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice\\src\\test\\scala",
+            "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice\\src\\test\\scala-2.13",
+            "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice\\src\\test\\scala-2",
+            "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice\\src\\test\\java",
+            "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice\\target\\scala-2.13\\src_managed\\test"
+        ],
+        "dependencies": [
+            "common",
+            "payment-invoice"
+        ],
+        "classpath": [
+            "C:\\dev\\github\\scala\\ScalaDemo\\.bloop\\payment-invoice\\scala-2.13\\classes",
+            "C:\\dev\\github\\scala\\ScalaDemo\\.bloop\\common\\scala-2.13\\classes",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.5\\scala-library-2.13.5.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\pdfbox\\pdfbox\\2.0.26\\pdfbox-2.0.26.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\play\\play-json_2.13\\2.10.0-RC2\\play-json_2.13-2.10.0-RC2.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\kafka\\kafka-clients\\3.2.3\\kafka-clients-3.2.3.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\scala\\mongo-scala-driver_2.13\\4.7.1\\mongo-scala-driver_2.13-4.7.1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\itextpdf\\itextpdf\\5.5.13.3\\itextpdf-5.5.13.3.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-api\\2.0.1\\slf4j-api-2.0.1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-simple\\2.0.0\\slf4j-simple-2.0.0.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-reflect\\2.13.5\\scala-reflect-2.13.5.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\pdfbox\\fontbox\\2.0.26\\fontbox-2.0.26.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\commons-logging\\commons-logging\\1.2\\commons-logging-1.2.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\play\\play-functional_2.13\\2.10.0-RC2\\play-functional_2.13-2.10.0-RC2.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\core\\jackson-core\\2.10.5\\jackson-core-2.10.5.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.10.5\\jackson-annotations-2.10.5.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jdk8\\2.10.5\\jackson-datatype-jdk8-2.10.5.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jsr310\\2.10.5\\jackson-datatype-jsr310-2.10.5.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.10.5.1\\jackson-databind-2.10.5.1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\github\\luben\\zstd-jni\\1.5.2-1\\zstd-jni-1.5.2-1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\lz4\\lz4-java\\1.8.0\\lz4-java-1.8.0.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\xerial\\snappy\\snappy-java\\1.1.8.4\\snappy-java-1.1.8.4.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\scala\\mongo-scala-bson_2.13\\4.7.1\\mongo-scala-bson_2.13-4.7.1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\mongodb-driver-reactivestreams\\4.7.1\\mongodb-driver-reactivestreams-4.7.1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\bson\\4.7.1\\bson-4.7.1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\mongodb-driver-core\\4.7.1\\mongodb-driver-core-4.7.1.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\reactivestreams\\reactive-streams\\1.0.2\\reactive-streams-1.0.2.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\io\\projectreactor\\reactor-core\\3.2.22.RELEASE\\reactor-core-3.2.22.RELEASE.jar",
+            "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\bson-record-codec\\4.7.1\\bson-record-codec-4.7.1.jar"
+        ],
+        "out": "C:\\dev\\github\\scala\\ScalaDemo\\.bloop\\payment-invoice",
+        "classesDir": "C:\\dev\\github\\scala\\ScalaDemo\\.bloop\\payment-invoice\\scala-2.13\\test-classes",
+        "resources": [
+            "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice\\src\\test\\resources",
+            "C:\\dev\\github\\scala\\ScalaDemo\\payment.invoice\\target\\scala-2.13\\resource_managed\\test"
+        ],
+        "scala": {
+            "organization": "org.scala-lang",
+            "name": "scala-compiler",
+            "version": "2.13.5",
+            "options": [
+                
+            ],
+            "jars": [
+                "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-compiler\\2.13.5\\scala-compiler-2.13.5.jar",
+                "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.5\\scala-library-2.13.5.jar",
+                "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-reflect\\2.13.5\\scala-reflect-2.13.5.jar",
+                "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline\\3.19.0\\jline-3.19.0.jar",
+                "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\net\\java\\dev\\jna\\jna\\5.3.1\\jna-5.3.1.jar"
+            ],
+            "setup": {
+                "order": "mixed",
+                "addLibraryToBootClasspath": true,
+                "addCompilerToClasspath": false,
+                "addExtraJarsToClasspath": false,
+                "manageBootClasspath": true,
+                "filterLibraryFromClasspath": true
+            }
+        },
+        "java": {
+            "options": [
+                
+            ]
+        },
+        "test": {
+            "frameworks": [
+                {
+                    "names": [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                }
+            ],
+            "options": {
+                "excludes": [
+                    
+                ],
+                "arguments": [
+                    
+                ]
+            }
+        },
+        "platform": {
+            "name": "jvm",
+            "config": {
+                "home": "C:\\Program Files\\Java\\jdk1.8.0_333\\jre",
+                "options": [
+                    "-Duser.dir=C:\\dev\\github\\scala\\ScalaDemo"
+                ]
+            },
+            "mainClass": [
+                
+            ]
+        },
+        "resolution": {
+            "modules": [
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.5\\scala-library-2.13.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.pdfbox",
+                    "name": "pdfbox",
+                    "version": "2.0.26",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "pdfbox",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\pdfbox\\pdfbox\\2.0.26\\pdfbox-2.0.26.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.play",
+                    "name": "play-json_2.13",
+                    "version": "2.10.0-RC2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "play-json_2.13",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\play\\play-json_2.13\\2.10.0-RC2\\play-json_2.13-2.10.0-RC2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.kafka",
+                    "name": "kafka-clients",
+                    "version": "3.2.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "kafka-clients",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\kafka\\kafka-clients\\3.2.3\\kafka-clients-3.2.3.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.mongodb.scala",
+                    "name": "mongo-scala-driver_2.13",
+                    "version": "4.7.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "mongo-scala-driver_2.13",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\scala\\mongo-scala-driver_2.13\\4.7.1\\mongo-scala-driver_2.13-4.7.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.itextpdf",
+                    "name": "itextpdf",
+                    "version": "5.5.13.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "itextpdf",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\itextpdf\\itextpdf\\5.5.13.3\\itextpdf-5.5.13.3.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.slf4j",
+                    "name": "slf4j-api",
+                    "version": "2.0.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "slf4j-api",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-api\\2.0.1\\slf4j-api-2.0.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.slf4j",
+                    "name": "slf4j-simple",
+                    "version": "2.0.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "slf4j-simple",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-simple\\2.0.0\\slf4j-simple-2.0.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-reflect",
+                    "version": "2.13.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-reflect",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-reflect\\2.13.5\\scala-reflect-2.13.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.pdfbox",
+                    "name": "fontbox",
+                    "version": "2.0.26",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "fontbox",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\pdfbox\\fontbox\\2.0.26\\fontbox-2.0.26.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "commons-logging",
+                    "name": "commons-logging",
+                    "version": "1.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "commons-logging",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\commons-logging\\commons-logging\\1.2\\commons-logging-1.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.play",
+                    "name": "play-functional_2.13",
+                    "version": "2.10.0-RC2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "play-functional_2.13",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\play\\play-functional_2.13\\2.10.0-RC2\\play-functional_2.13-2.10.0-RC2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.core",
+                    "name": "jackson-core",
+                    "version": "2.10.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "jackson-core",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\core\\jackson-core\\2.10.5\\jackson-core-2.10.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.core",
+                    "name": "jackson-annotations",
+                    "version": "2.10.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "jackson-annotations",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.10.5\\jackson-annotations-2.10.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.datatype",
+                    "name": "jackson-datatype-jdk8",
+                    "version": "2.10.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "jackson-datatype-jdk8",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jdk8\\2.10.5\\jackson-datatype-jdk8-2.10.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.datatype",
+                    "name": "jackson-datatype-jsr310",
+                    "version": "2.10.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "jackson-datatype-jsr310",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jsr310\\2.10.5\\jackson-datatype-jsr310-2.10.5.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.core",
+                    "name": "jackson-databind",
+                    "version": "2.10.5.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "jackson-databind",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.10.5.1\\jackson-databind-2.10.5.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.github.luben",
+                    "name": "zstd-jni",
+                    "version": "1.5.2-1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zstd-jni",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\com\\github\\luben\\zstd-jni\\1.5.2-1\\zstd-jni-1.5.2-1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.lz4",
+                    "name": "lz4-java",
+                    "version": "1.8.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "lz4-java",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\lz4\\lz4-java\\1.8.0\\lz4-java-1.8.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.xerial.snappy",
+                    "name": "snappy-java",
+                    "version": "1.1.8.4",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "snappy-java",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\xerial\\snappy\\snappy-java\\1.1.8.4\\snappy-java-1.1.8.4.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.mongodb.scala",
+                    "name": "mongo-scala-bson_2.13",
+                    "version": "4.7.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "mongo-scala-bson_2.13",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\scala\\mongo-scala-bson_2.13\\4.7.1\\mongo-scala-bson_2.13-4.7.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.mongodb",
+                    "name": "mongodb-driver-reactivestreams",
+                    "version": "4.7.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "mongodb-driver-reactivestreams",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\mongodb-driver-reactivestreams\\4.7.1\\mongodb-driver-reactivestreams-4.7.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.mongodb",
+                    "name": "bson",
+                    "version": "4.7.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "bson",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\bson\\4.7.1\\bson-4.7.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.mongodb",
+                    "name": "mongodb-driver-core",
+                    "version": "4.7.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "mongodb-driver-core",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\mongodb-driver-core\\4.7.1\\mongodb-driver-core-4.7.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.reactivestreams",
+                    "name": "reactive-streams",
+                    "version": "1.0.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "reactive-streams",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\reactivestreams\\reactive-streams\\1.0.2\\reactive-streams-1.0.2.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.projectreactor",
+                    "name": "reactor-core",
+                    "version": "3.2.22.RELEASE",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "reactor-core",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\io\\projectreactor\\reactor-core\\3.2.22.RELEASE\\reactor-core-3.2.22.RELEASE.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.mongodb",
+                    "name": "bson-record-codec",
+                    "version": "4.7.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "bson-record-codec",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\mongodb\\bson-record-codec\\4.7.1\\bson-record-codec-4.7.1.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.5",
+                    "configurations": "optional",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "C:\\Users\\james\\AppData\\Local\\Coursier\\cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.5\\scala-library-2.13.5.jar"
+                        }
+                    ]
+                }
+            ]
+        },
+        "tags": [
+            "test"
+        ]
+    }
+}
