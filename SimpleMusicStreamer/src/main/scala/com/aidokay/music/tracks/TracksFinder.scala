@@ -1,9 +1,6 @@
 package com.aidokay.music.tracks
 
 import java.io.File
-import java.nio.file.{Files, Path, Paths}
-import java.util.stream.Collectors
-import scala.util.Using
 
 object TracksFinder {
   trait TrackLoader[F[_], T] {

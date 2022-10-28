@@ -1,6 +1,5 @@
 package com.aidokay.music
 
-import akka.actor.typed.scaladsl.adapter.ClassicActorContextOps
 import akka.actor.{Actor, ActorLogging, Props, SupervisorStrategy}
 import akka.io.IO
 import akka.io.Tcp._
