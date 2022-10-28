@@ -1,7 +1,6 @@
 package com.aidokay.music
 
-import akka.actor.typed.scaladsl.adapter.{ClassicActorContextOps, ClassicActorSystemOps}
-import akka.actor.typed.{ActorRef => TypedActorRef}
+import akka.actor.typed.scaladsl.adapter.ClassicActorSystemOps
 import akka.actor.{Actor, ActorLogging, ActorRef, Props, ActorSystem => ClassicAS}
 import akka.io.Tcp.{Received, Write}
 import akka.util.ByteString
@@ -41,7 +40,6 @@ object NetController extends App {
         case None =>
           println(s"Invalid command $strCmd")
           Ignore
-          //throw new RuntimeException("Invalid Command")
       }
     }
 
