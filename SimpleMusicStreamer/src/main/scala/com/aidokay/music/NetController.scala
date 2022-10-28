@@ -1,50 +1,63 @@
 package com.aidokay.music
 
-import akka.actor.{
-  Actor,
-  ActorLogging,
-  ActorRef,
-  Props,
-  ActorSystem => ClassicAS
-}
-import akka.io.Tcp.Received
-import com.typesafe.config.{Config, ConfigFactory}
+import akka.actor.typed.scaladsl.adapter.{ClassicActorContextOps, ClassicActorSystemOps}
 import akka.actor.typed.{ActorRef => TypedActorRef}
-import com.aidokay.music.Commands.{
-  Command,
-  ListMusic,
-  Pause,
-  PlayMusic,
-  Schedule
-}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props, ActorSystem => ClassicAS}
+import akka.io.Tcp.{Received, Write}
+import akka.util.ByteString
+import com.aidokay.music.JokeBox._
+import com.typesafe.config.{Config, ConfigFactory}
 
 import java.net.InetSocketAddress
 
 object NetController extends App {
   class Controller(
       connection: ActorRef,
-      remote: InetSocketAddress,
-      jokeBox: TypedActorRef[Command]
+      remote: InetSocketAddress
   ) extends Actor
       with ActorLogging {
+
     context.watch(connection)
 
-    override def receive: Receive = { case Received(command) =>
-      command.utf8String.trim match {
-        case "/list" =>
-          println("Received: /list")
-          jokeBox ! ListMusic
-        case "/play" =>
-          println("Received /play")
-          jokeBox ! PlayMusic
-        case "/pause" =>
-          println("Received: /pause")
-          jokeBox ! Pause
-        case x if x.startsWith("/schedule") =>
-          val tracks = x.substring(10).split(",").toList
-          println(s"Schedule[$tracks] command received")
-          jokeBox ! Schedule(tracks)
+    type CmdCreator = ActorRef => MusicBox with Product
+
+    val cmdMapping: Map[String, CmdCreator] = Map(
+      "/list" -> ListMusic,
+      "/play" -> PlayMusic,
+      "/pause" -> PauseMusic
+    )
+    protected def tracks(str: String): List[String] =
+      str.substring(10).split(",").toList
+
+    protected def createCommand(strCmd: String): MusicBox = {
+      cmdMapping.get(strCmd.trim) match {
+        case None if strCmd.startsWith("/schedule") =>
+          val trks = tracks(strCmd)
+          println(s"Schedule[$trks] command received")
+          ScheduleMusic(trks, context.self)
+        case Some(cmd) =>
+          println(s"[$cmd] command received")
+          cmd.apply(context.self)
+        case None =>
+          println(s"Invalid command $strCmd")
+          Ignore
+          //throw new RuntimeException("Invalid Command")
       }
+    }
+
+    override def receive: Receive = { case Received(command) =>
+      val cmd = createCommand(command.utf8String.trim)
+      cmd match {
+        case ListMusic(_) => jokeBoxHandler ! cmd
+          context.become {
+            case ListedMusics(musics) =>
+              println(s"listed musics: $musics")
+              connection ! Write(ByteString.fromString(musics.mkString("\n")))
+              context.unbecome()
+          }
+        case _ => jokeBoxHandler ! cmd
+      }
+
     }
   }
   val config: Config = ConfigFactory.parseString("akka.loglevel = DEBUG")
@@ -54,5 +67,7 @@ object NetController extends App {
     Props(classOf[MusicManager], classOf[Controller]),
     "netController"
   )
+  import com.aidokay.music.tracks.AudioProviders.audioProvider
+  val jokeBoxHandler = system.spawn(new JokeBoxHandler(audioProvider).apply(), "jokeBoxHandler")
 
 }

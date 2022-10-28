@@ -1,6 +1,5 @@
 package com.aidokay.music
 
-import akka.actor.typed.ActorRef
 import akka.actor.typed.scaladsl.adapter.ClassicActorContextOps
 import akka.actor.{Actor, ActorLogging, Props, SupervisorStrategy}
 import akka.io.IO
@@ -11,7 +10,6 @@ import java.net.InetSocketAddress
 class MusicManager(handlerClass: Class[_]) extends Actor with ActorLogging {
   import akka.io.Tcp
   import context.system
-  lazy val jokeBox: ActorRef[Commands.Command] = context.spawn(JokeBoxController(), "jokeBox")
 
   override val supervisorStrategy: SupervisorStrategy =
     SupervisorStrategy.stoppingStrategy
@@ -39,7 +37,7 @@ class MusicManager(handlerClass: Class[_]) extends Actor with ActorLogging {
       context.stop(self)
     case Connected(remote, _) =>
       log.info(s"Received connection from {}", remote)
-      val handler = context.actorOf(Props(handlerClass, sender(), remote, jokeBox))
+      val handler = context.actorOf(Props(handlerClass, sender(), remote))
       sender() ! Register(handler, keepOpenOnPeerClosed = true)
   }
 }
