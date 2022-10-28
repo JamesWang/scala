@@ -1,15 +1,20 @@
 package com.aidokay.music
 
-import akka.actor.typed.ActorRef
+import akka.actor.ActorRef
 
 object JokeBox {
   case object Controller
 
-  sealed trait MusicBox {
-    val replyTo: ActorRef[_]
-  }
-  final case class ListM(replyTo: ActorRef[_]) extends MusicBox
-  final case class PlayM(replyTo: ActorRef[_]) extends MusicBox
-  final case class PauseM(replyTo: ActorRef[_]) extends MusicBox
-  final case class ScheduleM(tracks: List[String], replyTo: ActorRef[_]) extends MusicBox
+  sealed trait JokeBoxState
+  case object Playing extends JokeBoxState
+  case object Paused extends JokeBoxState
+
+  sealed trait MusicBox
+  final case class ListMusic(replyTo: ActorRef) extends MusicBox
+  final case class PlayMusic(replyTo: ActorRef) extends MusicBox
+  final case class PauseMusic(replyTo: ActorRef) extends MusicBox
+  final case class ScheduleMusic(tracks: List[String], replyTo: ActorRef) extends MusicBox
+  final case class ListedMusics(musics: List[String]) extends MusicBox
+  final case object Ignore extends MusicBox
+
 }
