@@ -15,11 +15,11 @@ object TypeClassDerive {
 
   def showProduct[T](shows: =>List[TypeClassDerive.Show[_]]): Show[T] =
     (a: T) => a.asInstanceOf[Product].productIterator.zip(shows.iterator).map {
-      case (p, s) => s.show(p)
+      case (p, s) => s.asInstanceOf[Show[Any]].show(p)
     }.mkString
 
   def showSum[T](s: Mirror.SumOf[T], shows: =>List[Show[_]]): Show[T] =
-    (a: T) => shows(s.ordinal(a)).show(a)
+    (a: T) => shows(s.ordinal(a)).asInstanceOf[Show[Any]].show(a)
 
   object Show:
     inline given derived[T](using m: Mirror.Of[T]): Show[T]=
