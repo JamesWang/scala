@@ -12,7 +12,7 @@ object RetCalcMain extends IOApp.Simple {
   //using cats.IO
   def loadWithIO[P](resource: String)(using p: ProductOf[P], d: RowDecoder[p.MirroredElemTypes]): IO[Vector[P]] =
     for {
-      vec <- DataLoader.loadWithIO(resource).use(DataLoader.mapThenSplit())
+      vec <- DataLoader.loadWithIO(resource).use(DataLoader.mapThenSplit(_))
     } yield vec.map(_.as[P])
 
   override def run: IO[Unit] =
