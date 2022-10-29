@@ -2,14 +2,13 @@ package com.aidokay.retirement.loader
 
 import cats.data.Reader
 import cats.effect.{IO, Resource, Sync}
-import com.aidokay.retirement.csv.Decoder.RowDecoder
+import com.aidokay.retirement.csv.Decoder.*
 
 import scala.deriving.Mirror.ProductOf
 import scala.io.{BufferedSource, Source}
 import scala.util.Using
 
 object DataLoader {
-  import com.aidokay.retirement.csv.Decoder.*
   private def mapSplitApply[T](data: Iterator[String])(f: String => T): Vector[T] =
     data.drop(1)
       .withFilter(_.trim.nonEmpty)
@@ -19,8 +18,8 @@ object DataLoader {
   def sSplit(line: String, delim: String="\\t"): List[String] =
     line.split(delim).toList
 
-  private def mapSplit =  (rs: BufferedSource) => mapSplitApply[List[String]](rs.getLines())(sSplit(_))
-  def mapThenSplit[F[_]: Sync](): BufferedSource => F[Vector[List[String]]] = Sync[F].map(mapSplit)
+  def mapSplit(rs: BufferedSource): Vector[List[String]] = mapSplitApply[List[String]](rs.getLines())(sSplit(_))
+  def mapThenSplit[F[_]: Sync](rs: BufferedSource): F[Vector[List[String]]] = Sync[F].pure(mapSplit(rs))
 
   def load: Reader[String, Vector[List[String]]] = Reader{rs =>
     Using.resource(Source.fromResource(rs))(mapSplit)
