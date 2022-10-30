@@ -18,8 +18,8 @@ object DataLoader {
   def sSplit(line: String, delim: String="\\t"): List[String] =
     line.split(delim).toList
 
-  def mapSplit(rs: BufferedSource): Vector[List[String]] = mapSplitApply[List[String]](rs.getLines())(sSplit(_))
-  def mapThenSplit[F[_]: Sync](rs: BufferedSource): F[Vector[List[String]]] = Sync[F].pure(mapSplit(rs))
+  def mapSplit: BufferedSource => Vector[List[String]] = rs => mapSplitApply[List[String]](rs.getLines())(sSplit(_))
+  def mapThenSplit[F[_]: Sync]: BufferedSource => F[Vector[List[String]]] = rs => Sync[F].pure(mapSplit(rs))
 
   def load: Reader[String, Vector[List[String]]] = Reader{rs =>
     Using.resource(Source.fromResource(rs))(mapSplit)
