@@ -48,9 +48,9 @@ object NetController extends App {
       cmd match {
         case ListMusic(_) => jokeBoxHandler ! cmd
           context.become {
-            case ListedMusics(musics) =>
-              println(s"listed musics: $musics")
-              connection ! Write(ByteString.fromString(musics.mkString("\n")))
+            case ListedMusic(music) =>
+              println(s"listed music: $music")
+              connection ! Write(ByteString.fromString(music.mkString("\n")))
               context.unbecome()
           }
         case _ => jokeBoxHandler ! cmd
@@ -65,7 +65,7 @@ object NetController extends App {
     Props(classOf[MusicManager], classOf[Controller]),
     "netController"
   )
-  import com.aidokay.music.tracks.AudioProviders.audioProvider
+  import com.aidokay.music.tracks.MusicProviders.audioProvider
   val jokeBoxHandler = system.spawn(new JokeBoxHandler(audioProvider).apply(), "jokeBoxHandler")
 
 }
