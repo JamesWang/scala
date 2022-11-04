@@ -2,7 +2,6 @@ package com.aidokay.music
 
 import com.aidokay.music.JokeBox.{JokeBoxState, Listener, Paused, Playing}
 import com.aidokay.music.tracks.AudioProvider
-import org.reactivestreams.{Publisher, Subscriber}
 
 import java.io.RandomAccessFile
 import scala.collection.mutable
@@ -36,7 +35,9 @@ object JokeBoxData {
     def playNext(): Unit = {
       take() match {
         case Some(music) =>
-          currentPlayingTrack = Some(new PlayingTrack(music))
+          currentPlayingTrack = Some(
+            new PlayingTrack(music, audioProvider.location)
+          )
           currentState = Playing
         case _ =>
       }
@@ -49,21 +50,32 @@ object JokeBoxData {
 
   }
 
-  class PlayingTrack(track: String) extends AutoCloseable {
+  class PlayingTrack(track: String, location: String) extends AutoCloseable {
     private val chunkSize: Int = 4096
-    private val dataArray: Array[Byte] = Array.ofDim[Byte](chunkSize)
     private var done = false
 
-    var currentFile: RandomAccessFile = new RandomAccessFile(track, "r")
+    var currentFile: RandomAccessFile =
+      new RandomAccessFile(location + track, "r")
     var positionInFile: Int = 0
 
-    val publisher = new Publisher[Array[Byte]] (){
-      override def subscribe(s: Subscriber[_ >: Array[Byte]]): Unit = ???
-    }
     def streamAudioChunk(listeners: List[Listener]): Unit = {
-      val byteRead = currentFile.read(dataArray, positionInFile, chunkSize)
-      positionInFile += byteRead
-      listeners.foreach(_.listen(dataArray))
+      try {
+        if (!done) {
+          val dataArray = Array.ofDim[Byte](chunkSize)
+          currentFile.seek(positionInFile)
+          val byteRead = currentFile.read(dataArray, 0, chunkSize)
+          if (byteRead > 0) {
+            positionInFile += byteRead
+            listeners.foreach(_.listen(dataArray))
+          } else {
+            close()
+          }
+        }
+      } catch {
+        case e: Throwable =>
+          e.printStackTrace()
+          close()
+      }
     }
 
     override def close(): Unit = {
