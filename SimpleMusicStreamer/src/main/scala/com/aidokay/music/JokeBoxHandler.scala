@@ -17,7 +17,7 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   private def streamAudioChunk(): Unit = {
-    if (jokeBoxData.state() == Paused || jokeBoxData.isEmpty) return
+    if (jokeBoxData.state() == Paused ) return
     jokeBoxData.currentPlaying match {
       case None if jokeBoxData.isEmpty =>
         jokeBoxData.updateCurrentState(Paused)
