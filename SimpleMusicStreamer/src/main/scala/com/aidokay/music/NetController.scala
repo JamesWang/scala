@@ -67,8 +67,7 @@ object NetController extends App {
   )
   import com.aidokay.music.tracks.MusicProviders.audioProvider
   val jokeBoxHandler  = system.spawn(new JokeBoxHandler(audioProvider).apply(), "jokeBoxHandler")
-  val musicSubscriber = system.spawn(MusicSubscriber.apply(jokeBoxHandler),"musicSubscriber")
 
-  val routes = new StreamingRoutes(musicSubscriber).streamRoutes
+  val routes = new StreamingRoutes(jokeBoxHandler).streamRoutes
   StreamHttpServer.startHttpServer(routes = routes)
 }

@@ -18,6 +18,7 @@ object JokeBox {
   final case object Ignore extends MusicBox
   final case object Cancel extends MusicBox
   final case class SubscribeMusic(listener: Listener) extends MusicBox
+  final case class StartPlayMusic(listener: Listener) extends MusicBox
 
   trait Listener {
     type O
