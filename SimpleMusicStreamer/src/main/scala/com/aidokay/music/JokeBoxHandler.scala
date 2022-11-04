@@ -24,7 +24,14 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
       case None =>
         jokeBoxData.playNext()
       case Some(playing) =>
-        playing.streamAudioChunk(subscribers)
+        if (playing.isDone && jokeBoxData.isEmpty) {
+          jokeBoxData.stopPlaying()
+        }else {
+          playing.streamAudioChunk(subscribers)
+          if (playing.isDone) {
+            jokeBoxData.stopPlaying()
+          }
+        }
     }
   }
 
@@ -36,7 +43,6 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
   }
 
   def list(replyTo: ActorRef)(implicit ctx: ActorContext[MusicBox]): Unit = {
-    ctx.log.info("in list()")
     replyTo ! ListedMusic(audioProvider.audioList())
   }
 
