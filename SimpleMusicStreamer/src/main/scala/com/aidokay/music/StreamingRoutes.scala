@@ -2,21 +2,22 @@ package com.aidokay.music
 
 import akka.NotUsed
 import akka.actor.typed.{ActorRef, ActorSystem}
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.HttpMethods.GET
 import akka.http.scaladsl.model.MediaType.Compressible
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.scaladsl.Source
-import akka.util.{BoundedBlockingQueue, ByteString, Timeout}
-import com.aidokay.music.JokeBox.{Listener, MusicBox, StartPlayMusic, SubscribeMusic}
+import akka.util.{BoundedBlockingQueue, ByteString}
+import com.aidokay.music.JokeBox.{Listener, MusicBox, SubscribeMusic}
 
 import java.util.concurrent.ArrayBlockingQueue
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Failure, Success}
 
-class StreamingRoutes(musicSubscriber: ActorRef[MusicBox])(implicit val system: ActorSystem[_]
-) {
-  private implicit val timeout: Timeout = Timeout.create(
-    system.settings.config.getDuration("music-streamer.routes.ask-timeout")
-  )
+class StreamingRoutes(musicSubscriber: ActorRef[MusicBox])(implicit val system: ActorSystem[_]) {
+
 
   case class MListener() extends Listener {
     override type O = Unit
@@ -35,24 +36,30 @@ class StreamingRoutes(musicSubscriber: ActorRef[MusicBox])(implicit val system: 
       Iterator.continually(listener.buffer.take())
     })
   }
+  val mp3: ContentType.Binary = ContentType(
+    MediaType.audio("mpeg", comp = Compressible, fileExtensions = "mp3")
+  )
 
   val streamRoutes: Route = pathPrefix("music") {
     concat(
       pathEnd {
         concat(
           get {
-            complete {
-              HttpEntity(
-                ContentType(
-                  MediaType
-                    .audio("mpeg", comp = Compressible, fileExtensions = "mp3")
-                ),
-                generateMusicSource()
-              )
-            }
+            complete { HttpEntity(mp3, generateMusicSource()) }
           }
         )
       }
     )
+  }
+
+  val requestHandler: (Http.IncomingConnection, HttpRequest) => HttpResponse = { (conn, request) =>
+    request match {
+      case HttpRequest(GET, Uri.Path("/music"), _, _, _) =>
+        val entity = HttpEntity(mp3, generateMusicSource())
+        val response = HttpResponse(
+          entity = entity
+        )
+        response
+    }
   }
 }

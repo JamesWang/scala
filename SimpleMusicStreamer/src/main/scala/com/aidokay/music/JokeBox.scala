@@ -2,6 +2,8 @@ package com.aidokay.music
 
 import akka.actor.ActorRef
 
+import java.util.concurrent.atomic.AtomicInteger
+
 object JokeBox {
   case object Controller
 
@@ -18,10 +20,11 @@ object JokeBox {
   final case object Ignore extends MusicBox
   final case object Cancel extends MusicBox
   final case class SubscribeMusic(listener: Listener) extends MusicBox
-  final case class StartPlayMusic(listener: Listener) extends MusicBox
+  final case class UnSubscribe(listener: Listener) extends MusicBox
 
   trait Listener {
     type O
+    val id = new AtomicInteger(0)
     def listen(chunk: Array[Byte]): O
   }
 }

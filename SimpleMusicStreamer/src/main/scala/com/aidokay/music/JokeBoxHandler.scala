@@ -79,6 +79,9 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
           }
         case Cancel =>
           streamerInstance.foreach(_.cancel())
+        case UnSubscribe(listener) =>
+          context.log.info(s"UnSubscribe [${listener.id}]")
+          subscribers = subscribers.filter(_.id != listener.id)
       }
       Behaviors.same
     }
