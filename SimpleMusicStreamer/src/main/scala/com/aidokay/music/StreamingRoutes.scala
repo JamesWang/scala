@@ -1,16 +1,15 @@
 package com.aidokay.music
 
-import akka.NotUsed
+import akka.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import akka.actor.typed.{ActorRef, ActorSystem}
 import akka.http.scaladsl.model.MediaType.Compressible
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import akka.stream.scaladsl.Source
-import akka.util.{BoundedBlockingQueue, ByteString, Timeout}
-import com.aidokay.music.JokeBox.{Listener, MusicBox, StartPlayMusic, SubscribeMusic}
+import akka.util.Timeout
+import com.aidokay.music.JokeBox.{MusicBox, SubscribeMusic, Subscribed}
 
-import java.util.concurrent.ArrayBlockingQueue
+import scala.concurrent.Future
 
 class StreamingRoutes(musicSubscriber: ActorRef[MusicBox])(implicit val system: ActorSystem[_]
 ) {
@@ -18,22 +17,8 @@ class StreamingRoutes(musicSubscriber: ActorRef[MusicBox])(implicit val system: 
     system.settings.config.getDuration("music-streamer.routes.ask-timeout")
   )
 
-  case class MListener() extends Listener {
-    override type O = Unit
-    val buffer: BoundedBlockingQueue[ByteString] =
-      new BoundedBlockingQueue[ByteString](1024, new ArrayBlockingQueue(1024))
-
-    override def listen(chunk: Array[Byte]): Unit = {
-      buffer.offer(ByteString(chunk))
-    }
-  }
-
-  def generateMusicSource(): Source[ByteString, NotUsed] = {
-    val listener = MListener()
-    musicSubscriber ! SubscribeMusic(listener)
-    Source.fromIterator(() => {
-      Iterator.continually(listener.buffer.take())
-    })
+  def generateMusicSource(): Future[Subscribed]= {
+    musicSubscriber.ask(SubscribeMusic)
   }
 
   val streamRoutes: Route = pathPrefix("music") {
@@ -41,15 +26,16 @@ class StreamingRoutes(musicSubscriber: ActorRef[MusicBox])(implicit val system: 
       pathEnd {
         concat(
           get {
-            complete {
-              HttpEntity(
-                ContentType(
-                  MediaType
-                    .audio("mpeg", comp = Compressible, fileExtensions = "mp3")
-                ),
-                generateMusicSource()
-              )
-            }
+            onSuccess (generateMusicSource()) { result =>
+              complete (
+                HttpEntity(
+                  ContentType(
+                    MediaType
+                      .audio("mpeg", comp = Compressible, fileExtensions = "mp3")
+                  ),
+                  result.musicSource.map(next=>next())
+                )
+            )}
           }
         )
       }

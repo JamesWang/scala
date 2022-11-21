@@ -1,9 +1,9 @@
 package com.aidokay.music
 
-import com.aidokay.music.JokeBox.{JokeBoxState, Listener, Paused, Playing}
-import com.aidokay.music.tracks.AudioProvider
+import akka.util.ByteString
+import com.aidokay.music.tracks.{AudioProvider, TrackReader}
+import com.aidokay.music.JokeBox._
 
-import java.io.RandomAccessFile
 import scala.collection.mutable
 
 object JokeBoxData {
@@ -44,42 +44,20 @@ object JokeBoxData {
     }
 
     def stopPlaying(): Unit = {
-      currentPlayingTrack.foreach(_.close())
       currentPlayingTrack = None
     }
 
   }
 
   class PlayingTrack(track: String, location: String) extends AutoCloseable {
-    private val chunkSize: Int = 4096
     private var done = false
+    val trackReader: Iterator[Array[Byte]] = new TrackReader(location = location, music = track).asIterator()
 
-    var currentFile: RandomAccessFile =
-      new RandomAccessFile(location + track, "r")
-    var positionInFile: Int = 0
-
-    def streamAudioChunk(listeners: List[Listener]): Unit = {
-      try {
-        if (!done) {
-          val dataArray = Array.ofDim[Byte](chunkSize)
-          currentFile.seek(positionInFile)
-          val byteRead = currentFile.read(dataArray, 0, chunkSize)
-          if (byteRead > 0) {
-            positionInFile += byteRead
-            listeners.foreach(_.listen(dataArray))
-          } else {
-            close()
-          }
-        }
-      } catch {
-        case e: Throwable =>
-          e.printStackTrace()
-          close()
-      }
+    def streamAudioChunk(): Iterator[ByteString] = {
+      trackReader.map(ByteString(_))
     }
 
     override def close(): Unit = {
-      currentFile.close()
       done = true
     }
 
