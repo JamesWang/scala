@@ -15,10 +15,25 @@ class TrackReader(location: String, music: String) {
     )
 
     var buff: Seq[Array[Byte]] = LazyList
-      .continually {
-        val ba: Array[Byte] = new Array[Byte](4096 * 4)
-        bis.read(ba)
-        ba
+      .from {
+        new IterableOnce[Array[Byte]] {
+          override def iterator: Iterator[Array[Byte]] = {
+            new Iterator[Array[Byte]] {
+              var hasMore = true
+              override def hasNext: Boolean = hasMore
+
+              override def next(): Array[Byte] = {
+                val ba: Array[Byte] = new Array[Byte](4096 * 4)
+                val count = bis.read(ba)
+                println(s"read[$count] bytes")
+                if (count <= 0) {
+                  hasMore = false
+                  Array.empty[Byte]
+                } else ba
+              }
+            }
+          }
+        }
       }
       .takeWhile(_.length > 0)
 
@@ -27,7 +42,7 @@ class TrackReader(location: String, music: String) {
       buff = buff.tail
       head
     }
-    private def cpmplete(): Array[Byte] = {
+    private def complete(): Array[Byte] = {
       eof = true
       Array.empty[Byte]
     }
@@ -36,10 +51,10 @@ class TrackReader(location: String, music: String) {
     }
     override def next(): Array[Byte] = {
       val result = Try {
-        if (buff.head.length > 0) chunk() else cpmplete()
+        if (buff.head.length > 0) chunk() else complete()
       } match {
         case Success(value) => value
-        case Failure(_) =>  cpmplete()
+        case Failure(_)     => complete()
       }
       closeIfDone()
       result

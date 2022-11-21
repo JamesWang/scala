@@ -19,7 +19,7 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
     new Iterator[ByteString] {
       override def hasNext: Boolean = true
 
-      jokeBoxData.currentPlaying.map(_.streamAudioChunk())
+      jokeBoxData.currentPlaying.map(_.currentPlay.streamAudioChunk())
 
       override def next(): ByteString = {
         if (jokeBoxData.state() == Paused) return ByteString.empty
@@ -31,16 +31,16 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
             jokeBoxData.playNext()
             ByteString.empty
           case Some(playing) =>
-            if (playing.isDone && jokeBoxData.isEmpty) {
+            if (playing.currentPlay.isDone && jokeBoxData.isEmpty) {
               jokeBoxData.stopPlaying()
               ByteString.empty
             } else {
-              if (playing.isDone) {
+              val chunk = playing.chunks.next()
+              if (chunk.isEmpty) {
+                playing.currentPlay.close()
                 jokeBoxData.stopPlaying()
-                ByteString.empty
-              } else {
-               playing.streamAudioChunk().next()
               }
+              chunk
             }
         }
       }
