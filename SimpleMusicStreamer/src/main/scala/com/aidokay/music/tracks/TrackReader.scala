@@ -9,27 +9,39 @@ class TrackReader(location: String, music: String) {
   def asIterator(): Iterator[Array[Byte]] = new Iterator[Array[Byte]] {
 
     var eof: Boolean = false
+
+    var readSize: Int  = 0
     override def hasNext: Boolean = !eof
     val bis = new BufferedInputStream(
       new FileInputStream(Paths.get(location, music).toFile)
     )
-
+    val trackSize: Int = bis.available()
     var buff: Seq[Array[Byte]] = LazyList
       .from {
         new IterableOnce[Array[Byte]] {
           override def iterator: Iterator[Array[Byte]] = {
             new Iterator[Array[Byte]] {
               var hasMore = true
+              var prepercent: Int = 0
               override def hasNext: Boolean = hasMore
-
+              def showReadPercentage(readCount: Int) : Unit ={
+                readSize += readCount
+                val percent = ((readSize.doubleValue / trackSize.doubleValue) * 100).intValue()
+                if (percent % 10 == 0 && percent != prepercent) {
+                  printf("----%d%%----", percent)
+                  prepercent = percent
+                }
+              }
               override def next(): Array[Byte] = {
                 val ba: Array[Byte] = new Array[Byte](4096 * 4)
                 val count = bis.read(ba)
-                println(s"read[$count] bytes")
                 if (count <= 0) {
                   hasMore = false
                   Array.empty[Byte]
-                } else ba
+                } else {
+                  showReadPercentage(count)
+                  ba
+                }
               }
             }
           }

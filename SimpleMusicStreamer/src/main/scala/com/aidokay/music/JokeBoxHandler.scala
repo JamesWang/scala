@@ -19,25 +19,21 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
     new Iterator[ByteString] {
       override def hasNext: Boolean = true
 
-      jokeBoxData.currentPlaying.map(_.currentPlay.streamAudioChunk())
-
       override def next(): ByteString = {
         if (jokeBoxData.state() == Paused) return ByteString.empty
-        jokeBoxData.currentPlaying match {
-          case None if jokeBoxData.isEmpty =>
-            jokeBoxData.updateCurrentState(Paused)
-            ByteString.empty
+        jokeBoxData.currentTrack() match {
           case None =>
-            jokeBoxData.playNext()
+            if (jokeBoxData.isEmpty) jokeBoxData.updateCurrentState(Paused)
+            else jokeBoxData.playNext()
             ByteString.empty
           case Some(playing) =>
-            if (playing.currentPlay.isDone && jokeBoxData.isEmpty) {
+            if (playing.track.isDone && jokeBoxData.isEmpty) {
               jokeBoxData.stopPlaying()
               ByteString.empty
             } else {
               val chunk = playing.chunks.next()
               if (chunk.isEmpty) {
-                playing.currentPlay.close()
+                playing.track.close()
                 jokeBoxData.stopPlaying()
               }
               chunk
@@ -69,7 +65,8 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
     }
   }
 
-  val timedSource: Source[() => ByteString, Cancellable] = Source.tick(1.second, 200.millisecond, streamAudioChunk().next)
+  val timedSource: Source[() => ByteString, Cancellable] =
+    Source.tick(1.second, 200.millisecond, streamAudioChunk().next)
 
   def apply(): Behavior[MusicBox] = {
     var streamerInstance: Option[Cancellable] = None
@@ -84,7 +81,9 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
         case Ignore                         => ()
         case SubscribeMusic(replyTo) =>
           context.log.info(s"SubscribeMusic from [$replyTo")
-          replyTo ! Subscribed(timedSource)
+          val tSource = timedSource
+          replyTo ! Subscribed(tSource)
+          tSource.mapMaterializedValue(c => streamerInstance = Option(c))
         case Cancel =>
           streamerInstance.foreach(_.cancel())
       }

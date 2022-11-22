@@ -28,17 +28,17 @@ object JokeBoxData {
 
     def isEmpty: Boolean = playList.isEmpty
 
-    private var currentPlayingTrack: Option[PlayingInfo] = None
-    case class PlayingInfo(currentPlay: PlayingTrack, chunks: Iterator[ByteString])
+    private var currentTrackOpt: Option[PlayingInfo] = None
+    case class PlayingInfo(track: PlayingTrack, chunks: Iterator[ByteString])
 
-    def currentPlaying: Option[PlayingInfo] = currentPlayingTrack
+    def currentTrack(): Option[PlayingInfo] = currentTrackOpt
 
     def playNext(): Unit = {
       take() match {
         case Some(music) =>
-          println(s"playing [$music...")
+          println(s"\nPlaying [$music...]")
           val track = new PlayingTrack(music, audioProvider.location)
-          currentPlayingTrack = Some(
+          currentTrackOpt = Some(
             PlayingInfo(
               track,
               track.streamAudioChunk()
@@ -49,7 +49,7 @@ object JokeBoxData {
     }
 
     def stopPlaying(): Unit = {
-      currentPlayingTrack = None
+      currentTrackOpt = None
     }
 
   }
