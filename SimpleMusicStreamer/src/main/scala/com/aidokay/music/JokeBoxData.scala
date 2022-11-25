@@ -1,9 +1,9 @@
 package com.aidokay.music
 
-import com.aidokay.music.JokeBox.{JokeBoxState, Listener, Paused, Playing}
-import com.aidokay.music.tracks.AudioProvider
+import akka.util.ByteString
+import com.aidokay.music.tracks.{AudioProvider, TrackReader}
+import com.aidokay.music.JokeBox._
 
-import java.io.RandomAccessFile
 import scala.collection.mutable
 
 object JokeBoxData {
@@ -28,58 +28,41 @@ object JokeBoxData {
 
     def isEmpty: Boolean = playList.isEmpty
 
-    private var currentPlayingTrack: Option[PlayingTrack] = None
+    private var currentTrackOpt: Option[PlayingInfo] = None
+    case class PlayingInfo(track: PlayingTrack, chunks: Iterator[ByteString])
 
-    def currentPlaying: Option[PlayingTrack] = currentPlayingTrack
+    def currentTrack(): Option[PlayingInfo] = currentTrackOpt
 
     def playNext(): Unit = {
       take() match {
         case Some(music) =>
-          currentPlayingTrack = Some(
-            new PlayingTrack(music, audioProvider.location)
-          )
+          println(s"\nPlaying [$music...]")
+          val track = new PlayingTrack(music, audioProvider.location)
+          currentTrackOpt = Some(
+            PlayingInfo(
+              track,
+              track.streamAudioChunk()
+          ))
           currentState = Playing
         case _ =>
       }
     }
 
     def stopPlaying(): Unit = {
-      currentPlayingTrack.foreach(_.close())
-      currentPlayingTrack = None
+      currentTrackOpt = None
     }
 
   }
 
   class PlayingTrack(track: String, location: String) extends AutoCloseable {
-    private val chunkSize: Int = 4096
     private var done = false
+    val trackReader: Iterator[Array[Byte]] = new TrackReader(location = location, music = track).asIterator()
 
-    var currentFile: RandomAccessFile =
-      new RandomAccessFile(location + track, "r")
-    var positionInFile: Int = 0
-
-    def streamAudioChunk(listeners: List[Listener]): Unit = {
-      try {
-        if (!done) {
-          val dataArray = Array.ofDim[Byte](chunkSize)
-          currentFile.seek(positionInFile)
-          val byteRead = currentFile.read(dataArray, 0, chunkSize)
-          if (byteRead > 0) {
-            positionInFile += byteRead
-            listeners.foreach(_.listen(dataArray))
-          } else {
-            close()
-          }
-        }
-      } catch {
-        case e: Throwable =>
-          e.printStackTrace()
-          close()
-      }
+    def streamAudioChunk(): Iterator[ByteString] = {
+      trackReader.map(ByteString(_))
     }
 
     override def close(): Unit = {
-      currentFile.close()
       done = true
     }
 
