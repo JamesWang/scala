@@ -8,13 +8,18 @@ import scala.collection.mutable
 
 object JokeBoxData {
   class JokeBoxContext(private val audioProvider: AudioProvider[String]) {
+
+    @volatile
     private var currentState: JokeBoxState = Paused
     private val playList: mutable.ArrayDeque[String] =
       new mutable.ArrayDeque[String]()
 
     def updateCurrentState(state: JokeBoxState): Unit = currentState = state
 
-    def offer(track: String): Unit = playList.append(track)
+    def offer(track: String): Unit = {
+      playList.append(track)
+      currentState = Playing
+    }
 
     def take(): Option[String] =
       if (playList.nonEmpty) Option(playList.remove(0)) else None
