@@ -1,12 +1,15 @@
 package com.aidokay.music
 
+import akka.NotUsed
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
 import akka.actor.{ActorRef, Cancellable}
-import akka.stream.scaladsl.Source
+import akka.stream.BoundedSourceQueue
+import akka.stream.scaladsl.{BroadcastHub, Keep, RunnableGraph, Sink, Source}
 import akka.util.ByteString
 import com.aidokay.music.JokeBox._
 import com.aidokay.music.JokeBoxData.JokeBoxContext
+import com.aidokay.music.NetController.typedSystem
 import com.aidokay.music.tracks.AudioProvider
 
 import scala.concurrent.duration.DurationInt
@@ -68,6 +71,14 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
   val timedSource: Source[() => ByteString, Cancellable] =
     Source.tick(1.second, 200.millisecond, streamAudioChunk().next)
 
+  def runnableGraph(): RunnableGraph[Source[ByteString, NotUsed]] =
+    timedSource.map(_())
+      .toMat(
+        BroadcastHub.sink[ByteString](bufferSize = 64)
+      )(Keep.right)
+
+  val fromProducer: Source[ByteString, NotUsed] = runnableGraph().run()
+
   def apply(): Behavior[MusicBox] = {
     var streamerInstance: Option[Cancellable] = None
     Behaviors.receive { (context, message) =>
@@ -81,9 +92,8 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
         case Ignore                         => ()
         case SubscribeMusic(replyTo) =>
           context.log.info(s"SubscribeMusic from [$replyTo")
-          val tSource = timedSource
-          replyTo ! Subscribed(tSource)
-          tSource.mapMaterializedValue(c => streamerInstance = Option(c))
+          replyTo ! Subscribed(fromProducer)
+          //fromProducer().mapMaterializedValue(c => streamerInstance = Option(c))
         case Cancel =>
           streamerInstance.foreach(_.cancel())
       }

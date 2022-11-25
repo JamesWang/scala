@@ -1,5 +1,6 @@
 package com.aidokay.music
 
+import akka.NotUsed
 import akka.actor.{ActorRef, Cancellable}
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
@@ -20,7 +21,7 @@ object JokeBox {
   final case object Ignore extends MusicBox
   final case object Cancel extends MusicBox
   final case class SubscribeMusic(replyTo: akka.actor.typed.ActorRef[Subscribed]) extends MusicBox
-  final case class Subscribed(musicSource: Source[()=>ByteString, Cancellable])
+  final case class Subscribed(musicSource: Source[ByteString, NotUsed])
   final case class StartPlayMusic() extends MusicBox
 
 

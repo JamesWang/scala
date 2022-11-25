@@ -27,7 +27,7 @@ class StreamingRoutes(musicSubscriber: ActorRef[MusicBox])(implicit val system: 
       pathEnd {
         concat(get {
           onSuccess(generateMusicSource()) { result =>
-            complete(HttpEntity(mp3, result.musicSource.map(next => next())))
+            complete(HttpEntity(mp3, result.musicSource))
           }
         })
       }
