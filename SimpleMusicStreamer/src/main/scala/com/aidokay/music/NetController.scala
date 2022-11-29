@@ -2,16 +2,11 @@ package com.aidokay.music
 
 import akka.actor.typed.scaladsl.adapter.ClassicActorSystemOps
 import akka.actor.typed.ActorSystem
-import akka.actor.{
-  Actor,
-  ActorLogging,
-  ActorRef,
-  Props,
-  ActorSystem => ClassicAS
-}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props, ActorSystem => ClassicAS}
 import akka.io.Tcp.{Received, Write}
 import akka.util.ByteString
 import com.aidokay.music.JokeBox._
+import com.aidokay.music.tracks.AudioProvider
 import com.typesafe.config.{Config, ConfigFactory}
 
 import java.net.InetSocketAddress
@@ -68,7 +63,8 @@ object NetController extends App {
     Props(classOf[MusicManager], classOf[Controller]),
     "netController"
   )
-  import com.aidokay.music.tracks.MusicProviders.audioProvider
+  import com.aidokay.music.tracks.MusicProviders.mp3Provider
+  implicit val audioProvider: AudioProvider[String] = mp3Provider("V:\\MusicPhotos\\music")
   val jokeBoxHandler =
     system.spawn(new JokeBoxHandler(audioProvider).apply(), "jokeBoxHandler")
 

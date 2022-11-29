@@ -22,7 +22,7 @@ object JokeBox {
   final case object Cancel extends MusicBox
   final case class SubscribeMusic(replyTo: akka.actor.typed.ActorRef[Subscribed]) extends MusicBox
   final case class Subscribed(musicSource: Source[ByteString, NotUsed])
-  final case class StartPlayMusic() extends MusicBox
+
 
 
 }

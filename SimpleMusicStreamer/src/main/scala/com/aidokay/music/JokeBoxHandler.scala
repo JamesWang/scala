@@ -4,8 +4,7 @@ import akka.NotUsed
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
 import akka.actor.{ActorRef, Cancellable}
-import akka.stream.BoundedSourceQueue
-import akka.stream.scaladsl.{BroadcastHub, Keep, RunnableGraph, Sink, Source}
+import akka.stream.scaladsl.{BroadcastHub, Keep, RunnableGraph, Source}
 import akka.util.ByteString
 import com.aidokay.music.JokeBox._
 import com.aidokay.music.JokeBoxData.JokeBoxContext
@@ -93,7 +92,6 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
         case SubscribeMusic(replyTo) =>
           context.log.info(s"SubscribeMusic from [$replyTo")
           replyTo ! Subscribed(fromProducer)
-          //fromProducer().mapMaterializedValue(c => streamerInstance = Option(c))
         case Cancel =>
           streamerInstance.foreach(_.cancel())
       }
