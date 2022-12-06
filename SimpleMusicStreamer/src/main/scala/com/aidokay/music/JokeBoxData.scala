@@ -1,6 +1,6 @@
 package com.aidokay.music
 
-import com.aidokay.music.JokeBox.{JokeBoxState, Listener, Paused, Playing}
+import com.aidokay.music.JokeBox.{JokeBoxState, Paused, Playing}
 import com.aidokay.music.tracks.AudioProvider
 
 import java.io.RandomAccessFile
@@ -20,7 +20,7 @@ object JokeBoxData {
       if (playList.nonEmpty) Option(playList.remove(0)) else None
 
     def allAudios(): Unit = {
-      playList.addAll(audioProvider.audioList())
+      playList.addAll(audioProvider.audioList)
       ()
     }
 
@@ -58,24 +58,8 @@ object JokeBoxData {
       new RandomAccessFile(location + track, "r")
     var positionInFile: Int = 0
 
-    def streamAudioChunk(listeners: List[Listener]): Unit = {
-      try {
-        if (!done) {
-          val dataArray = Array.ofDim[Byte](chunkSize)
-          currentFile.seek(positionInFile)
-          val byteRead = currentFile.read(dataArray, 0, chunkSize)
-          if (byteRead > 0) {
-            positionInFile += byteRead
-            listeners.foreach(_.listen(dataArray))
-          } else {
-            close()
-          }
-        }
-      } catch {
-        case e: Throwable =>
-          e.printStackTrace()
-          close()
-      }
+    def streamAudioChunk[T](listeners: List[T]): Unit = {
+
     }
 
     override def close(): Unit = {

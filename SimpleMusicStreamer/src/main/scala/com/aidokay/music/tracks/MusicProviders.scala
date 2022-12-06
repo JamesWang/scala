@@ -2,10 +2,10 @@ package com.aidokay.music.tracks
 
 
 object MusicProviders {
-  implicit val audioProvider: AudioProvider[String] =
+  def  mp3Provider(loc: String): AudioProvider[String] =
     new AudioProvider[String]() {
-      override def audioList(): List[String] = TracksFinder.map3FileFinder.load("V:\\MusicPhotos\\music")
+      override lazy val audioList: List[String] = TracksFinder.map3FileFinder.load(loc)
 
-      override val location: String = "V:\\MusicPhotos\\music\\"
+      override val location: String = loc
     }
 }

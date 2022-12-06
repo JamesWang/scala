@@ -1,23 +1,26 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.13.10"
+ThisBuild / scalaVersion := "3.2.0"
+
+ThisBuild / scalacOptions ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((3, _)) => Seq("-Ykind-projector:underscores")
+    case Some((2, 12 | 13)) => Seq("-Xsource:3", "-P:kind-projector:underscore-placeholders")
+  }
+}
 
 lazy val root = (project in file("."))
   .settings(
     name := "SimpleMusicStreamer"
   )
 
-val AkkaVersion = "2.6.20"
-val AkkaHttpVersion = "10.2.10"
-
 libraryDependencies ++= Seq(
-  "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
-  "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
-  "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
-  "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
-  "com.typesafe.akka" %% "akka-slf4j" % AkkaVersion,
-  "ch.qos.logback" % "logback-classic" % "1.2.11",
-  "com.typesafe.akka" %% "akka-actor-testkit-typed" % AkkaVersion % Test,
-  "com.typesafe.akka" %% "akka-http-testkit" % AkkaHttpVersion % Test,
+  "dev.zio" %% "zio" % "2.0.4",
+  "dev.zio" %% "zio-streams" % "2.0.4",
+  "dev.zio" %% "zio-http" % "0.0.3",
+  "org.apache.tika" % "tika-core" % "2.6.0",
+//  "org.apache.tika" % "tika-parsers" % "2.6.0" pomOnly(),
+  "org.apache.tika" % "tika-parsers-standard-package" % "2.6.0",
+  "ch.qos.logback" % "logback-classic" % "1.4.5" % Test,
   "org.scalatest" %% "scalatest" % "3.2.14" % Test
 )
