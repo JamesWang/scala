@@ -1,32 +1,40 @@
 package com.aidokay.music
 
-import com.aidokay.music.JokeBox._
+import com.aidokay.music.JokeBox.*
 import com.aidokay.music.JokeBoxData.JokeBoxContext
 import com.aidokay.music.tracks.AudioProvider
 
 class JokeBoxHandler(audioProvider: AudioProvider[String]) {
 
   private val jokeBoxData = new JokeBoxContext(audioProvider)
-  var subscribers: List[Any] = Nil
+  private val EMPTY_ARRAY = Array[Byte]()
 
-  private def streamAudioChunk(): Unit = {
-    if (jokeBoxData.state() == Paused ) return
-    jokeBoxData.currentPlaying match {
-      case None if jokeBoxData.isEmpty =>
-        jokeBoxData.updateCurrentState(Paused)
-      case None =>
-        jokeBoxData.playNext()
-      case Some(playing) =>
-        if (playing.isDone && jokeBoxData.isEmpty) {
-          jokeBoxData.stopPlaying()
-        }else {
-          playing.streamAudioChunk(subscribers)
-          if (playing.isDone) {
-            jokeBoxData.stopPlaying()
-          }
+  def streamAudioChunk: Iterator[Array[Byte]] =
+    new Iterator[Array[Byte]] {
+      override def hasNext: Boolean = true
+
+      override def next(): Array[Byte] = {
+        if (jokeBoxData.state() == Paused) return EMPTY_ARRAY
+        jokeBoxData.currentTrack() match {
+          case None =>
+            if (jokeBoxData.isEmpty) jokeBoxData.updateCurrentState(Paused)
+            else jokeBoxData.playNext()
+            EMPTY_ARRAY
+          case Some(playing) =>
+            if (playing.track.isDone && jokeBoxData.isEmpty) {
+              jokeBoxData.stopPlaying()
+              EMPTY_ARRAY
+            } else {
+              val chunk = playing.chunks.next()
+              if (chunk.isEmpty) {
+                playing.track.close()
+                jokeBoxData.stopPlaying()
+              }
+              chunk
+            }
         }
+      }
     }
-  }
 
   def play(): Unit = {
     jokeBoxData.updateCurrentState(Playing)
@@ -35,19 +43,19 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
     jokeBoxData.updateCurrentState(Paused)
   }
 
-  def list[T](replyTo: T): Unit = {
-    //replyTo ! ListedMusic(audioProvider.audioList())
+  def list(): List[String] = {
+    audioProvider.audioList
   }
 
-  def schedule(tracks: List[String]): Unit = {
-    if (tracks.contains("all")) {
+  def schedule(csvTracks: String): Unit = {
+    if (csvTracks.contains("all")) {
       jokeBoxData.allAudios()
     } else {
-      tracks.foreach(jokeBoxData.offer)
+      asList(csvTracks).foreach(jokeBoxData.offer)
     }
   }
 
-  def apply(): Unit = {
-    var streamerInstance = None
-  }
+  def asList(str: String): List[String] =
+    str.split(",").toList
+
 }

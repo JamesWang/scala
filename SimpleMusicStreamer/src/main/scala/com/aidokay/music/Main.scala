@@ -2,32 +2,21 @@ package com.aidokay.music
 
 import com.aidokay.music.tracks.MusicProviders
 import zio.ZIOAppDefault
-import zio.http.*
 import zio.http.model.Method
 import zio.*
+import zio.http.{Server, ServerConfig}
 
 object Main extends ZIOAppDefault {
-
   private val port = 8088
-  private val netController = new NetController(
-    MusicProviders.mp3Provider("V:\\MusicPhotos\\music\\")
-  )
 
-  private val admin: String = "admin"
-  private val adminRoutes: HttpApp[Any, Nothing] = Http.collect[Request] {
-    case Method.GET -> !! / admin / "list" =>
-      Response.text(netController.list().mkString("\n"))
-    case Method.GET -> !! / admin / "schedule" / music =>
-      netController.schedule(music); Response.ok
-    case Method.GET -> !! / admin / "play" => netController.play(); Response.ok
-    case Method.GET -> !! / admin / "pause" =>
-      netController.pause(); Response.ok
-  }
+  val jokeBoxHandler = new JokeBoxHandler(MusicProviders.mp3Provider("V:\\MusicPhotos\\music\\"))
 
-  private val playMusic: HttpApp[Any, Nothing] = Http.collectZIO[Request] {
-    case Method.GET -> !! / "music" => ???
+  val routes = new StreamingRoutes(jokeBoxHandler)
+
+  val config1: ServerConfig = ServerConfig.default.port(port)
+  val config2: ServerConfig = ServerConfig.default.port(8089)
+  val run: ZIO[Any, Throwable, Nothing] = {
+    Server.serve(routes.adminRoutes++routes.listenRoutes).provide(ServerConfig.live(config1), Server.live, Scope.default)
+    //Server.serve(routes.listenRoutes).provide(ServerConfig.live(config2), Server.live)
   }
-  val config: ServerConfig = ServerConfig.default.port(port)
-  val run =
-    Server.serve(adminRoutes).provide(ServerConfig.live(config), Server.live)
 }

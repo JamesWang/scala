@@ -12,8 +12,8 @@ object TracksFinder {
     def isMusic(t: T): Boolean
   }
 
-  class MusicFileFilter(extPattern: String) extends MusicTrack[String] {
-    def isMusic(name: String): Boolean = name.endsWith(extPattern)
+  class MusicFileFilter extends MusicTrack[String] {
+    def isMusic(name: String): Boolean = name.endsWith(".mp3")
   }
   class TrackFileLoader(musicFile: MusicTrack[String])
       extends TrackLoader[List, String] {
@@ -30,5 +30,5 @@ object TracksFinder {
     override def load(loc: String): List[O] = listOfFiles(new File(loc))
   }
 
-  val map3FileFinder = new TrackFileLoader(new MusicFileFilter(".mp3"))
+  val map3FileFinder = new TrackFileLoader(new MusicFileFilter())
 }
