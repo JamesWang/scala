@@ -15,4 +15,14 @@ class TestTrackFinder
       result.size should ===(53)
     }
   }
+
+  "TrackReader.asIterator()" should {
+    "works ok" in {
+      val iter = new TrackReader("V:\\MusicPhotos\\music", "1902262839.mp3").asIterator()
+      for {
+        _ <- iter.next()
+      } yield ()
+    }
+  }
+
 }
