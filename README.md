@@ -7,5 +7,5 @@
   https://github.com/JamesWang/scala/tree/master/SimpleMusicStreamer
 - Implementation of Finding max difference in a List: 
   https://github.com/JamesWang/scala/blob/master/FP_In_Scala3/src/main/scala/com/aidokay/algo/FindMaxDiff.scala
-- Sort algos
+- Sort algos: 
   https://github.com/JamesWang/scala/blob/master/FP_In_Scala3/src/main/scala/com/aidokay/algo/SortAlgo.scala
