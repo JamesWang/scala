@@ -80,22 +80,27 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
 
   def apply(): Behavior[MusicBox] = {
     var streamerInstance: Option[Cancellable] = None
-    Behaviors.receive { (context, message) =>
+    Behaviors.setup { context =>
       implicit val ctx: ActorContext[MusicBox] = context
-      context.log.info(s"Received: $message")
-      message match {
-        case ListMusic(replyTo)             => list(replyTo)
-        case PlayMusic(_)                   => play()
-        case PauseMusic(_)                  => pause()
-        case ScheduleMusic(tracks, replyTo) => schedule(tracks, replyTo)
-        case Ignore                         => ()
-        case SubscribeMusic(replyTo) =>
-          context.log.info(s"SubscribeMusic from [$replyTo")
-          replyTo ! Subscribed(fromProducer)
-        case Cancel =>
-          streamerInstance.foreach(_.cancel())
+      val musicDownloader = context.spawn(new MusicDownloader(audioProvider).apply(), "musicDownloader")
+      Behaviors.receiveMessage { message =>
+        context.log.info(s"Received: $message")
+        message match {
+          case ListMusic(replyTo) => list(replyTo)
+          case PlayMusic(_) => play()
+          case PauseMusic(_) => pause()
+          case ScheduleMusic(tracks, replyTo) => schedule(tracks, replyTo)
+          case Ignore => ()
+          case SubscribeMusic(replyTo) =>
+            context.log.info(s"SubscribeMusic from [$replyTo")
+            replyTo ! Subscribed(fromProducer)
+          case dld@DownloadMusic(_, _) =>
+            musicDownloader ! dld
+          case Cancel =>
+            streamerInstance.foreach(_.cancel())
+        }
+        Behaviors.same
       }
-      Behaviors.same
     }
   }
 }

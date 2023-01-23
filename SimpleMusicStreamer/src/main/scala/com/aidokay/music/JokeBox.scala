@@ -17,12 +17,13 @@ object JokeBox {
   final case class PlayMusic(replyTo: ActorRef) extends MusicBox
   final case class PauseMusic(replyTo: ActorRef) extends MusicBox
   final case class ScheduleMusic(tracks: List[String], replyTo: ActorRef) extends MusicBox
+  final case class DownloadMusic(track: String, replyTo: akka.actor.typed.ActorRef[Downloaded]) extends MusicBox
   final case class ListedMusic(music: List[String]) extends MusicBox
   final case object Ignore extends MusicBox
   final case object Cancel extends MusicBox
   final case class SubscribeMusic(replyTo: akka.actor.typed.ActorRef[Subscribed]) extends MusicBox
   final case class Subscribed(musicSource: Source[ByteString, NotUsed])
-
+  final case class Downloaded(musicSource: String)
 
 
 }
