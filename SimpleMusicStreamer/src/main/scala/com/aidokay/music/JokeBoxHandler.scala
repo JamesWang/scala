@@ -6,6 +6,7 @@ import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
 import akka.actor.{ActorRef, Cancellable}
 import akka.stream.scaladsl.{BroadcastHub, Keep, RunnableGraph, Source}
 import akka.util.ByteString
+import com.aidokay.music.MusicDownloader.TrackInfoProvider
 import com.aidokay.music.JokeBox._
 import com.aidokay.music.JokeBoxData.JokeBoxContext
 import com.aidokay.music.NetController.typedSystem
@@ -82,7 +83,7 @@ class JokeBoxHandler(audioProvider: AudioProvider[String]) {
     var streamerInstance: Option[Cancellable] = None
     Behaviors.setup { context =>
       implicit val ctx: ActorContext[MusicBox] = context
-      val musicDownloader = context.spawn(new MusicDownloader(audioProvider).apply(), "musicDownloader")
+      val musicDownloader = context.spawn(new TrackInfoProvider(audioProvider).apply(), "musicDownloader")
       Behaviors.receiveMessage { message =>
         context.log.info(s"Received: $message")
         message match {
