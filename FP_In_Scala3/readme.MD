@@ -32,3 +32,32 @@ remaining numbers in the List
             it will show root and root-test
   
 After this setup,compile will be much faster
+
+###Refinement types
+ - Nominal subtype
+      
+        A class (A) inherits from another (B), the first class (A) is said to be a nominal
+        subtype of the other one (B). 
+        It's a nominal subtype because each type has a name, and the names are explicitly
+        declared to have a subtyping relationship.
+- Givens
+        
+        Alias givens - the name to the left of the = sign is an alias for the value to the right
+  - import
+        
+        import ABC.*  -- imports all members except given members
+        to import givens, expliictly or 
+           - import ABC.given, or
+           - import ABC.{given XXX }  --- by type
+           - import ABC.{given XXX[?]} -- all sub-type of XXX defined in ABC
+
+  - Context parameters 
+  
+         Those that are defined in a using clause, compiler will insert context parameters to fix
+         any errors due to missing parameter lists.
+  - -Xprint:typer
+         
+         use this option to the compiler, it will show you what your code looks like after all 
+         givens have been added by the type checker:
+        
+     ![img_1.png](img_1.png)
