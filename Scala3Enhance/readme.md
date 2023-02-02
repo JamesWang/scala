@@ -68,3 +68,21 @@ the enw element value is checked against the stored type.**
 
     Enumerated data types -> EDT 
         - is a sealed family of case classes in which none of the cases take paramters
+
+
+### Abstract members
+    
+    new RationalTrait:
+        val numerArg = expr1
+        val denomArg = expr2
+
+    the expressions, expr1 and expr2, are evaluated as part of the initialization of 
+    the anonymous class, but the anonymous class is initialized after the RationalTrait,
+    
+    So the values of numerArg and denomArg are not available during the initialization 
+    of RationalTrait 
+
+#### Context Parameters are those that are defined in a using clause
+#### Every typeclass trait takes a type parameter, because a typeclass instance knows how to do something with objects of that type
+#### Scala compilter rewrites extension methods in place, thse methods will become members of the typeclass trait itself
+
