@@ -36,6 +36,7 @@ the enw element value is checked against the stored type.**
         - is a sealed family of case classes in which none of the cases take paramters
 
 
+
 ### Abstract members
     
     new RationalTrait:
@@ -47,3 +48,8 @@ the enw element value is checked against the stored type.**
     
     So the values of numerArg and denomArg are not available during the initialization 
     of RationalTrait 
+
+#### Context Parameters are those that are defined in a using clause
+#### Every typeclass trait takes a type parameter, because a typeclass instance knows how to do something with objects of that type
+#### Scala compilter rewrites extension methods in place, thse methods will become members of the typeclass trait itself
+
