@@ -33,14 +33,14 @@ class TrackReader(location: String, music: String) {
                 }
               }
               override def next(): Array[Byte] = {
-                val ba: Array[Byte] = new Array[Byte](4096 * 4)
-                val count = bis.read(ba)
+                val dataBuffer: Array[Byte] = new Array[Byte](4096 * 4)
+                val count = bis.read(dataBuffer)
                 if (count <= 0) {
                   hasMore = false
                   Array.empty[Byte]
                 } else {
                   showReadPercentage(count)
-                  ba
+                  dataBuffer
                 }
               }
             }

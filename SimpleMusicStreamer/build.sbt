@@ -7,8 +7,8 @@ lazy val root = (project in file("."))
     name := "SimpleMusicStreamer"
   )
 
-val AkkaVersion = "2.6.20"
-val AkkaHttpVersion = "10.2.10"
+val AkkaVersion = "2.7.0"
+val AkkaHttpVersion = "10.4.0"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
@@ -16,8 +16,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
   "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
   "com.typesafe.akka" %% "akka-slf4j" % AkkaVersion,
-  "ch.qos.logback" % "logback-classic" % "1.2.11",
+  "ch.qos.logback" % "logback-classic" % "1.4.5",
   "com.typesafe.akka" %% "akka-actor-testkit-typed" % AkkaVersion % Test,
   "com.typesafe.akka" %% "akka-http-testkit" % AkkaHttpVersion % Test,
-  "org.scalatest" %% "scalatest" % "3.2.14" % Test
+  "org.scalatest" %% "scalatest" % "3.2.15" % Test
 )
