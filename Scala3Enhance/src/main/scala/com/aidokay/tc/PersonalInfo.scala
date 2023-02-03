@@ -47,8 +47,42 @@ object PersonalInfo {
            |  "phoneNumber": ${t.phoneNumber.asJson}
            |}""".stripMargin
 
+  object Contact:
+    given JsonSerializer[Contact] with
+      override def serialize(t: Contact): String =
+        import com.aidokay.tc.JsonTC.ToJsonMethods.toJson as asJson
+        s"""
+           |{
+           |  "name" : ${t.name.asJson},
+           |  "addresses": ${t.addresses.asJson},
+           |  "phones": ${t.phones.asJson}
+           |}""".stripMargin
+
+  object AddressBook:
+    given JsonSerializer[AddressBook] with
+      override def serialize(t: AddressBook): String =
+        import com.aidokay.tc.JsonTC.ToJsonMethods.toJson as asJson
+        s"""
+           |{
+           |"contacts": ${t.contacts.asJson}
+           |}""".stripMargin
+
   def main(args: Array[String]): Unit = {
     import com.aidokay.tc.JsonTC.ToJsonMethods.*
     println(List(1,2,3).toJson)
+
+    val addressBook =
+      AddressBook(
+        List(
+          Contact( "Bob Smith",
+            List(
+              Address("12345 Main Street", "San Francisco", "CA", 94105),
+              Address("500 State Street", "Los Angeles", "CA", 90007)
+            ),
+            List(Phone(1, 5558881234), Phone(49, 5558413323))
+          )
+        )
+      )
+    println(addressBook.toJson)
   }
 }
