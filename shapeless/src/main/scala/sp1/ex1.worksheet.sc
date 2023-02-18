@@ -73,7 +73,14 @@ type Light = Red :+: Amber :+: Green :+: CNil
 
 val red: Light = Inl(Red())
 
+//          Red :+: Amber :+: Green :+: CNil
+//                 .^Inr_________________________
+//                      ......^Inr______________
+//                         ...^Inl______
 val green: Light = Inr(Inr(Inl(Green())))
+
+val amber: Light = Inr(Inl(Amber()))
+
 
 val gen = Generic[Shape]
 
@@ -89,8 +96,11 @@ implicit val employeeEncoder: CsvEncoder[Employee] = new CsvEncoder[Employee] {
     )
 }
 
-def writeCsv[A: CsvEncoder](values: List[A]): String =
-  values.map(value => implicitly[CsvEncoder[A]].encode(value).mkString(",")).mkString("\n")
+def writeCsv[A: CsvEncoder](values: List[A]): String = {
+  val encoder = implicitly[CsvEncoder[A]]
+  //values.par.map(value => encoder.encode(value).mkString(",")).mkString("\n")
+  values.map(value => encoder.encode(value).mkString(",")).mkString("\n")
+}
 
 
 val employees: List[Employee] = List(
@@ -115,21 +125,15 @@ val iceCreams: List[IceCream] = List(
 
 writeCsv(iceCreams)
 
-implicit def pairEncoder[A, B](
-                                implicit aEncoder: CsvEncoder[A],
-                                bEncoder: CsvEncoder[B]
-                              ): CsvEncoder[(A, B)] =
-  new CsvEncoder[(A, B)] {
-    override def encode(value: (A, B)): List[String] = {
-      val (a, b) = value
-      aEncoder.encode(a) ++ bEncoder.encode(b)
-    }
-  }
+implicit def pairEncoder[A, B](implicit aEncoder: CsvEncoder[A], bEncoder: CsvEncoder[B]): CsvEncoder[(A, B)] = {
+  CsvEncoder.instance(p=>aEncoder.encode(p._1) ++ bEncoder.encode(p._2))
+}
 
 writeCsv(employees zip iceCreams)
 
 
 the[CsvEncoder[IceCream]]
+implicitly[CsvEncoder[IceCream]]  //implicitly does not infer type correctly
 
 implicit val booleanEncoder: CsvEncoder[Boolean] =
 /*new CsvEncoder[Boolean] {
