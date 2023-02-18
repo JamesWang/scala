@@ -1,5 +1,6 @@
 package sp1
 
+//Turn a value of type A into a row of cells in a CSV file
 trait CsvEncoder[A] {
   def encode(value: A): List[String]
 }
