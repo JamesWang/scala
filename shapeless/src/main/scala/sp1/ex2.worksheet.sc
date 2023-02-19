@@ -50,12 +50,16 @@ reprEncoder.encode("abc":: 123::true::HNil)
     type Aux[A, R] = Generic[A] { type Repr = R }
   }
  */
+/*
+  Given a type A, and an HList type R, an implicit Generic to map A to R,
+  and a CsvEncoder for R, create a CsvEncoder for A
+ */
 implicit def genericEncoder[A, R](
   implicit
   //gen: Generic[A]{ type Repr = R}, //override Generic's Repr
-  gen: Generic.Aux[A, R],
+  gen: Generic.Aux[A, R], //does not change semantics, just making things easier to read
   enc: CsvEncoder[R]
-): CsvEncoder[A] = createEncoder(a => enc.encode(gen.to(a)))
+): CsvEncoder[A] = createEncoder(a => enc.encode(gen.to(a))) //A => HList => CSV
 
 //needs implicit Encoder for LocalDate
 case class Booking(room: String, date: LocalDate)
@@ -71,6 +75,8 @@ final case class Circle(radius: Double) extends Shape
 implicit val cnilEncoder: CsvEncoder[CNil] =
   createEncoder(_ => throw new Exception("Inconceivable!"))
 
+
+//createEncoder(f: A => List[String])
 implicit def coproductEncoder[H, T <: Coproduct](
   implicit
   hnilEncoder: CsvEncoder[H],
