@@ -1,3 +1,4 @@
+import shapeless.ops.hlist.Last.Aux
 import shapeless.ops.hlist.{IsHCons, Last}
 import shapeless.{:+:, ::, Coproduct, Generic, HList, HNil, Inl, Inr, Lazy, Witness, the}
 import sp1.CsvEncoder
@@ -65,9 +66,9 @@ getRepr(Rect(Vec(0, 0), Vec(5, 5)))
 */
 
 
-val last1 = Last[String :: Int :: HNil]
+val last1: Last.Aux[String :: Int :: HNil, Int] = Last[String :: Int :: HNil]
 
-val last2 = Last[Int :: String :: HNil]
+val last2: Last.Aux[Int :: String :: HNil, String] = Last[Int :: String :: HNil]
 
 last1("foo" :: 123 :: HNil)
 last2(321 :: "foo" :: HNil)
@@ -83,6 +84,15 @@ object Second{
   //Using Aux ensures the apply() method does not erase the type
   //members on summoned instances
   def apply[L <: HList](implicit inst: Second[L]): Aux[L, inst.Out] = inst
+
+  //import Second.Aux
+  implicit def hlistSecond[A, B, Rest <: HList]: Aux[A::B::Rest,B] = {
+    new Second[A :: B:: Rest] {
+      type Out = B
+
+      override def apply(in: A :: B:: Rest): Out = in.tail.head
+    }
+  }
 }
 
 
@@ -97,14 +107,7 @@ So we should avoid implicitly when working with dependently typed funcঞons
 */
 //Using
 the[Last[String::Int::HNil]]
-import Second.Aux
-implicit def hlistSecond[A, B, Rest <: HList]: Aux[A::B::Rest,B] = {
-  new Second[A :: B:: Rest] {
-    type Out = B
 
-    override def apply(in: A :: B:: Rest): B = in.tail.head
-  }
-}
 
 val second1 = Second[String :: Boolean :: Int :: HNil]
 val second2 = Second[String :: Int :: Boolean :: HNil]
