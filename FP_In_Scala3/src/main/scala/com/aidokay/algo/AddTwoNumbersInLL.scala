@@ -52,15 +52,15 @@ object AddTwoNumbersInLL {
   def addTwoLinkedListRecursive(list1: List[Int], list2: List[Int]): List[Int] = {
     @tailrec
     def add(acc: List[Int], up: Int, l1: List[Int], l2: List[Int]): List[Int] = {
-      val (v1, t1)= l1 match
+      val (v1, t1) = l1 match
         case Nil => (0, Nil)
-        case h::t => (h, t)
+        case h :: t => (h, t)
       val (v2, t2) = l2 match
-        case  Nil => (0, Nil)
-        case h::t => (h, t)
+        case Nil => (0, Nil)
+        case h :: t => (h, t)
 
       val sum = v1 + v2 + up
-      val (nUp, rm)  = if (sum >= 10){
+      val (nUp, rm) = if (sum >= 10) {
         (1, sum - 10)
       } else {
         (0, sum)
@@ -70,6 +70,7 @@ object AddTwoNumbersInLL {
       }
       add(acc :+ rm, nUp, t1, t2)
     }
+
     add(List(), 0, list1.reverse, list2.reverse)
   }
 }
