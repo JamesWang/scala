@@ -40,11 +40,31 @@ class AddTwoNumbersInLLTest extends AnyWordSpec, Matchers, TypeCheckedTripleEqua
 
   "addTwoLinkedList() for List(2,4,3,5) and List(5,6,4)" should {
     "return List(9,9,9,2)" in {
-      val list1 = util.LinkedList[Int](util.Arrays.asList(2, 4, 3, 5))
-      val list2 = util.LinkedList[Int](util.Arrays.asList(5, 6, 4))
+      val list1 = List(2, 4, 3, 5)
+      val list2 = List(5, 6, 4)
 
       val result = AddTwoNumbersInLL.addTwoLinkedList(list1, list2)
-      result should ===(util.LinkedList(util.Arrays.asList(9, 9, 9, 2)))
+      result should ===(List(9, 9, 9, 2))
+    }
+  }
+
+  "addTwoLinkedListRecursive() for List(2,4,3) and List(5,6,4)" should {
+    "return List(7,0,8)" in {
+      val list1 = List(2, 4, 3)
+      val list2 = List(5, 6, 4)
+
+      val result = AddTwoNumbersInLL.addTwoLinkedListRecursive(list1, list2)
+      result should ===(List(7, 0, 8))
+    }
+  }
+
+  "addTwoLinkedListRecursive() for List(2,4,3,5) and List(5,6,4)" should {
+    "return List(9,9,9,2)" in {
+      val list1 = List(2, 4, 3, 5)
+      val list2 = List(5, 6, 4)
+
+      val result = AddTwoNumbersInLL.addTwoLinkedListRecursive(list1, list2)
+      result should ===(List(9, 9, 9, 2))
     }
   }
 }

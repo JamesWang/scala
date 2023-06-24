@@ -1,6 +1,7 @@
 package com.aidokay.algo
 
 import java.util
+import scala.annotation.tailrec
 
 object AddTwoNumbersInLL {
 
@@ -46,5 +47,29 @@ object AddTwoNumbersInLL {
       }
     }
     newList
+  }
+
+  def addTwoLinkedListRecursive(list1: List[Int], list2: List[Int]): List[Int] = {
+    @tailrec
+    def add(acc: List[Int], up: Int, l1: List[Int], l2: List[Int]): List[Int] = {
+      val (v1, t1)= l1 match
+        case Nil => (0, Nil)
+        case h::t => (h, t)
+      val (v2, t2) = l2 match
+        case  Nil => (0, Nil)
+        case h::t => (h, t)
+
+      val sum = v1 + v2 + up
+      val (nUp, rm)  = if (sum >= 10){
+        (1, sum - 10)
+      } else {
+        (0, sum)
+      }
+      if (t1.isEmpty && t2.isEmpty) {
+        return acc :+ rm
+      }
+      add(acc :+ rm, nUp, t1, t2)
+    }
+    add(List(), 0, list1.reverse, list2.reverse)
   }
 }
