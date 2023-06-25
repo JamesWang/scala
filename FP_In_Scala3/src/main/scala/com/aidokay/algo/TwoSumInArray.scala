@@ -14,4 +14,15 @@ object TwoSumInArray {
     }
     Array()
   }
+
+  def twoSumGeneric[T: Numeric](numbers: List[T], target: T): List[Int] = {
+    val hMap = mutable.Map[T, Int]()
+    for (i <- numbers.indices) {
+      val diff = Numeric[T].minus(target, numbers(i))
+      hMap.get(diff) match
+        case Some(index) => return List[Int](index, i)
+        case None => hMap(numbers(i)) = i
+    }
+    Nil
+  }
 }

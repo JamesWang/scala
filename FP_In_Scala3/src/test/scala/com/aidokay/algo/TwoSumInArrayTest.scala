@@ -12,4 +12,11 @@ class TwoSumInArrayTest extends AnyWordSpec, Matchers, TypeCheckedTripleEquals{
       result should ===(Array(2,3))
     }
   }
+
+  "twoSumGeneric() with Array(0, 1, 2, 7, 11, 15) and target 9" should {
+    "return Array(2,3)" in {
+      val result = TwoSumInArray.twoSumGeneric(List(0, 1, 2, 7, 11, 15), 9)
+      result should ===(List(2, 3))
+    }
+  }
 }
