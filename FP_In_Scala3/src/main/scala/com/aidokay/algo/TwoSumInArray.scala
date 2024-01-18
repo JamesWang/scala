@@ -9,7 +9,7 @@ object TwoSumInArray {
     for (i <- nums.indices) {
       val diff = target - nums(i)
       hMap.get(diff) match
-        case Some(index) => return Array(index, i)
+        case Some(index) => Array(index, i)
         case None => hMap(nums(i)) = i
     }
     Array()
@@ -20,7 +20,7 @@ object TwoSumInArray {
     for (i <- numbers.indices) {
       val diff = Numeric[T].minus(target, numbers(i))
       hMap.get(diff) match
-        case Some(index) => return List[Int](index, i)
+        case Some(index) => List[Int](index, i)
         case None => hMap(numbers(i)) = i
     }
     Nil
