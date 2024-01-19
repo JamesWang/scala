@@ -19,6 +19,8 @@ libraryDependencies ++= Seq(
   "io.github.iltotore" %% "iron" % "2.0.0",
   "io.github.iltotore" %% "iron-cats" % "2.0.0",
   "io.github.iltotore" %% "iron-circe" % "2.0.0",
+  "com.typesafe.akka" %% "akka-actor-typed" % "2.8.0",
+  "org.scalacheck" %% "scalacheck" % "1.17.0" % Test,
   "org.scalactic" %% "scalactic" % "3.2.16",
   "org.scalatest" %% "scalatest" % "3.2.15" % "test"
 )
