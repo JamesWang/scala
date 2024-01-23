@@ -14,6 +14,7 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-core" % "0.14.5",
   "io.circe" %% "circe-parser" % "0.14.5",
   "io.circe" %% "circe-refined" % "0.14.5",
+  "org.json4s" %% "json4s-jackson" % "4.0.6",
   "dev.zio" %% "zio" % "2.0.13",
   "dev.zio" %% "zio-streams" % "2.0.13",
   "io.github.iltotore" %% "iron" % "2.0.0",
