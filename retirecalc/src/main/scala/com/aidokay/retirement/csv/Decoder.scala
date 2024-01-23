@@ -1,8 +1,7 @@
 package com.aidokay.retirement.csv
 
 
-import com.aidokay.retirement.csv.Decoder.Row
-
+import scala.annotation.targetName
 import scala.deriving.Mirror.ProductOf
 
 object Decoder {
@@ -12,13 +11,13 @@ object Decoder {
     def as[T](using p: ProductOf[T], d: RowDecoder[p.MirroredElemTypes]): T =
       p.fromProduct(d.decode(row))
 
-  trait RowDecoder[A <: Tuple]:
+  trait RowDecoder[A]:
     def decode(a: Decoder.Row): A
 
   trait FieldDecoder[A]:
     def decodeField(a: String): A
 
-  def csvToProduct[P](row: Row)(using p: ProductOf[P], d: RowDecoder[p.MirroredElemTypes]): P =
+  private def csvToProduct[P](row: Row)(using p: ProductOf[P], d: RowDecoder[p.MirroredElemTypes]): P =
     p.fromProduct(d.decode(row))
 
   given RowDecoder[EmptyTuple] with
@@ -39,11 +38,13 @@ object Decoder {
   given FieldDecoder[Double] with
     def decodeField(x: String): Double = x.toDouble
 
-  given[H: FieldDecoder, T <: Tuple : RowDecoder]: RowDecoder[H *: T] with
-    def decode(row: Row): H *: T =
-      summon[FieldDecoder[H]].decodeField(row.head)
+  given decodeLine[H: FieldDecoder, T <: Tuple : RowDecoder]: RowDecoder[H *: T] with
+    def decode(row: Row): H *: T = {
+      val line = if (row.nonEmpty) row else List("")
+      summon[FieldDecoder[H]].decodeField(line.head)
         *:
-        summon[RowDecoder[T]].decode(row.tail)
+        summon[RowDecoder[T]].decode(line.tail)
+    }
 
   def main(args: Array[String]): Unit = {
     case class Foo(i: Int, b: Boolean, s: String)
