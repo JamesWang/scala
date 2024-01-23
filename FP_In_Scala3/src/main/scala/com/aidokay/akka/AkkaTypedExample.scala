@@ -17,5 +17,5 @@ object AkkaTypedExample {
 
   case class Extract(sender: ActorRef[Baker.Command]) extends Command
 
-  
+
 }
