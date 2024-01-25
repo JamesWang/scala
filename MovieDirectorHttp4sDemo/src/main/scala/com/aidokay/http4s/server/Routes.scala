@@ -1,13 +1,13 @@
-package com.aidokay.music.server
+package com.aidokay.http4s.server
 
 import cats.data.Reader
 import cats.Monad
 import cats.effect.Concurrent
-import com.aidokay.music.model.{Director, DirectorVar, Movie}
-import com.aidokay.music.service.Service
+import com.aidokay.http4s.model.{Director, DirectorVar, Movie}
+import com.aidokay.http4s.service.Service
 import org.http4s.circe.*
 import org.http4s.headers.*
-//import org.http4s.implicits.*
+
 import org.http4s.{
   EntityDecoder,
   Header,
@@ -32,10 +32,10 @@ import scala.util.Try
 
 object Routes {
 
-  object DirectorQueryParameterMatcher
+  private object DirectorQueryParameterMatcher
       extends QueryParamDecoderMatcher[String]("director")
 
-  object YearQueryParameterMatcher
+  private object YearQueryParameterMatcher
       extends OptionalValidatingQueryParamDecoderMatcher[Int]("year")
 
   def directorRoutes[F[_]: Concurrent]
@@ -48,14 +48,13 @@ object Routes {
 
     Reader((dService: Service[Option, Director]) =>
       HttpRoutes.of[F] {
-        case GET -> Root / "directors" / DirectorVar(director) => {
+        case GET -> Root / "directors" / DirectorVar(director) =>
           val result = dService.findData(director.toString)
           result match {
             case Some(d) =>
               Ok(d.asJson, Header.Raw(CIString("My-Custom-Header"), "value"))
             case _ => NotFound(s"No director called $director found")
           }
-        }
         case req @ POST -> Root / "directors" =>
           for {
             director <- req.as[Director]

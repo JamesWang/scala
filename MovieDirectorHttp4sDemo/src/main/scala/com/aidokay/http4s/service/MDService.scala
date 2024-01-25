@@ -1,7 +1,7 @@
-package com.aidokay.music.service
+package com.aidokay.http4s.service
 
 import cats.data.Reader
-import com.aidokay.music.repo.Repos.Repository
+import com.aidokay.http4s.repo.Repos.Repository
 
 import java.util.UUID
 
@@ -25,13 +25,13 @@ trait MovieService[F[_], T]:
     Reader((repo: Repository[F, String, T]) => repo.findById(id))
 
 trait MDService[F[_], T] extends Service[F, T]:
-  val movieService: MovieService[F, T]
+  this: MovieService[F, T] =>
   val repository: Repository[F, String, T]
 
-  override def saveData(t: T): Option[T] = movieService.save(t).run(repository)
+  override def saveData(t: T): Option[T] = save(t).run(repository)
 
   override def findData(key: String): F[T] =
-    movieService.find(key).run(repository)
+    find(key).run.apply(repository)
 
   override def findDataById(id: UUID): Option[T] =
-    movieService.findById(id).run(repository)
+    findById(id).run(repository)

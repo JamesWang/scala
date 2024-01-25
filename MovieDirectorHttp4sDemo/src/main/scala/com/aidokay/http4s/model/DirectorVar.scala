@@ -1,4 +1,4 @@
-package com.aidokay.music.model
+package com.aidokay.http4s.model
 
 import scala.util.Try
 
