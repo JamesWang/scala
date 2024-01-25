@@ -1,7 +1,6 @@
 package com.aidokay.retirement.csv
 
 
-import scala.annotation.targetName
 import scala.deriving.Mirror.ProductOf
 
 object Decoder {
@@ -17,8 +16,7 @@ object Decoder {
   trait FieldDecoder[A]:
     def decodeField(a: String): A
 
-  private def csvToProduct[P](row: Row)(using p: ProductOf[P], d: RowDecoder[p.MirroredElemTypes]): P =
-    p.fromProduct(d.decode(row))
+  private def csvToProduct[P](row: Row)(using p: ProductOf[P], d: RowDecoder[p.MirroredElemTypes]): P = row.as[P]
 
   given RowDecoder[EmptyTuple] with
     def decode(a: Row): EmptyTuple = EmptyTuple

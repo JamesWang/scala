@@ -1,8 +1,8 @@
-package com.aidokay.music.repo
+package com.aidokay.http4s.repo
 
 import java.util.UUID
 import scala.collection.mutable
-import com.aidokay.music.model.{Director, Movie}
+import com.aidokay.http4s.model.{Director, Movie}
 object Repos {
   trait Repository[F[_], K, T] {
     def find(key: K): F[T]
