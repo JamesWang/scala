@@ -11,9 +11,7 @@ object ContraVariant {
 
   def compose[A, B, C](f: A => B)(g: C => A): C => B = c => f(g(c))
 
-  implicit def opContraVariant: ContraVariant = new ContraVariant() {
+  given opContraVariant: ContraVariant = new ContraVariant():
     override def contramap[A, B, R](f: B => A)(g: Op[R, A]): Op[R, B] =
       flip(compose[A, R, B])(f)(g)
-  }
-
 }
