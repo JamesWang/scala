@@ -15,23 +15,18 @@ trait Service[F[_], T] {
 }
 
 trait MovieService[F[_], T]:
-  def save(t: T): Reader[Repository[F, String, T], Option[T]] =
-    Reader((repo: Repository[F, String, T]) => repo.save(t))
+  def save(t: T): Reader[Repository[F, String, T], Option[T]] = Reader(_.save(t))
 
-  def find(key: String): Reader[Repository[F, String, T], F[T]] =
-    Reader((repo: Repository[F, String, T]) => repo.find(key))
+  def find(key: String): Reader[Repository[F, String, T], F[T]] = Reader(_.find(key))
 
-  def findById(id: UUID): Reader[Repository[F, String, T], Option[T]] =
-    Reader((repo: Repository[F, String, T]) => repo.findById(id))
+  def findById(id: UUID): Reader[Repository[F, String, T], Option[T]] = Reader(_.findById(id))
 
 trait MDService[F[_], T] extends Service[F, T]:
   this: MovieService[F, T] =>
   val repository: Repository[F, String, T]
 
-  override def saveData(t: T): Option[T] = save(t).run(repository)
+  override def saveData(t: T): Option[T] = save(t)(repository)
 
-  override def findData(key: String): F[T] =
-    find(key).run.apply(repository)
+  override def findData(key: String): F[T] = find(key)(repository)
 
-  override def findDataById(id: UUID): Option[T] =
-    findById(id).run(repository)
+  override def findDataById(id: UUID): Option[T] = findById(id)(repository)
