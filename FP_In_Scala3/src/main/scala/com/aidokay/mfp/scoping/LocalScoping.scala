@@ -42,7 +42,7 @@ object LocalScoping:
         ((), s)
     }
 
-  object STRef:
+  private object STRef:
     def apply[S, A](a: A): ST[S, STRef[S, A]] = ST(new STRef[S, A] {
       var cell: A = a
     })
@@ -51,14 +51,14 @@ object LocalScoping:
   def main(args: Array[String]): Unit = {
     val p = new RunnableST[(Int, Int)] {
       override def apply[S]: ST[S, (Int, Int)] = for {
-        r1 <- STRef(1)
-        r2 <- STRef(2)
-        x <- r1.read
-        y <- r2.read
-        _ <- r1.write(y + 1)
-        _ <- r2.write(x + 1)
-        a <- r1.read
-        b <- r2.read
+        r1 <- STRef(1) //ST[S, STRef[S, Int]].flatMap
+        r2 <- STRef(2) //ST[S, STRef[S, Int].flatMap
+        x <- r1.read   //ST[S, Int].flatMap
+        y <- r2.read   //ST[S, Int].flatMap
+        _ <- r1.write(y + 1) //ST[S, Int].flatMap
+        _ <- r2.write(x + 1) //ST[S, Int].flatMap
+        a <- r1.read  //ST[S, Int].flatMap
+        b <- r2.read  //ST[S, Int].map
       } yield (a, b)
     }
 
