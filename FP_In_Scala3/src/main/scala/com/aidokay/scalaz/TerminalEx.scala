@@ -43,11 +43,27 @@ object TerminalEx {
         e.chain(c)(f andThen e.create)
     }
   }
+
   import Execution.*
+
   def echoV2[C[_]](using t: Terminal[C], e: Execution[C]): C[String] =
     for {
       in <- t.read
       _ <- t.write(in)
     } yield in
 
+  final class IO[A](val interpret: () => A) {
+    def map[B](f: A => B): IO[B] = IO(f(interpret()))
+
+    def flatMap[B](f: A => IO[B]): IO[B] = IO(f(interpret()).interpret())
+  }
+
+  private object IO {
+    def apply[A](a: => A): IO[A] = new IO(() => a)
+  }
+
+  object TerminalIO extends Terminal[IO] {
+    def read: IO[String] = IO{scala.io.StdIn.readLine}
+    def write(t: String):IO[Unit] = IO { println(t)}
+  }
 }
