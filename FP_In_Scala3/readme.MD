@@ -61,3 +61,15 @@ After this setup,compile will be much faster
          givens have been added by the type checker:
         
      ![img_1.png](img_1.png)
+### Scala 2's implicit class in Scala 3 is more intuitive by using **extension**
+```scala 3
+  extension (list: List[Double])
+    def +(other: List[Double]): List[Double] =
+      (list zip other).map(t => t._1 + t._2)
+
+  extension [A, C[_]](c: C[A]) {
+    def flatMap[B](f: A => C[B])(using e: Execution[C]): C[B] = e.chain(c)(f)
+    def map[B](f: A => B)(using e: Execution[C]): C[B] =
+      e.chain(c)(f andThen e.create)
+  }
+```
