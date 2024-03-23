@@ -73,3 +73,25 @@ After this setup,compile will be much faster
       e.chain(c)(f andThen e.create)
   }
 ```
+
+Every for-comprehension composed with:
+- every <- (being called a **generator**) is a nested **_flatMap_** call
+- the **final generator** is a _**map**_ containing the _yield body_
+```scala 3
+            for {
+                i <- a
+                j <- b
+                ij = i + j //will be in the body of b's map
+                k <- c
+            } yield (ij + k)
+```
+to
+```scala 3
+            a.flatMap {
+              i => b.map { j => (j, i+j)}.flatMap{ 
+                case (i, ij) => c.map{ //last map contains body of yield
+                  k => ij + k  //body of yield
+                }
+              }
+            }
+```
