@@ -1,6 +1,6 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "3.1.3"
+ThisBuild / scalaVersion := "3.4.2"
 
 lazy val root = (project in file("."))
   .settings(
@@ -8,6 +8,6 @@ lazy val root = (project in file("."))
   )
 
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "cats-core" % "2.8.0"
+  "org.typelevel" %% "cats-core" % "2.12.0"
 )
 
