@@ -1,15 +1,12 @@
 package com.aidokay.retirement.retcalc
 
-import com.aidokay.retirement.csv.Decoder.Row
 import com.aidokay.retirement.retcalc.Models.{EquityData, InflationData, RetCalcParams}
-
-import scala.deriving.Mirror.ProductOf
 
 object SimulatePlanApp extends App {
   import com.aidokay.retirement.csv.Decoder.*
 
   def strMain(args: Array[String]): String =
-    val (from +: until +: Nil) = args(0).split(",").toList
+    val from +: until +: Nil = args(0).split(",").toList: @unchecked
     val nbOfYearsSaving = args(1).toInt
     val nbOfYearsRetired = args(2).toInt
 
