@@ -24,7 +24,7 @@ object jsEx {
   }
 
   def main(args: Array[String]): Unit = {
-    val json = JsParser(
+    /*val json = JsParser(
       s"""
          |{
          |"access_token": "BEARER_TOKEN",
@@ -32,6 +32,6 @@ object jsEx {
          |"expires_in": 3600,
          |"refresh_token": "REFRESH_TOKEN"
          |}
-         |""".stripMargin)
+         |""".stripMargin)*/
   }
 }

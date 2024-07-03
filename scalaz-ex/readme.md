@@ -57,4 +57,16 @@ preferred:
 ### Avoid using java.net.URL
 * it uses DNS to resolve the hostname part when performing toString, equals or hashCode.
   Apart from being insane, and very very slow, these methods can throw I/O exceptions (are not pure), 
-  and can change depending on the network configuration 
+  and can change depending on the network configuration
+
+### Configure kind-projector
+```sbt
+ThisBuild / scalacOptions += "-P:kind-projector:underscore-placeholders"
+        ...
+
+.settings(
+  addCompilerPlugin( "org.typelevel" %% "kind-projector" % "0.10.3"),
+        ...
+)
+
+```
