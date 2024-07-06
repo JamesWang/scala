@@ -70,3 +70,26 @@ ThisBuild / scalacOptions += "-P:kind-projector:underscore-placeholders"
 )
 
 ```
+
+### Free Monad
+* The idea behind Free Monad is that all of our **computation** become a value. 
+  The idea is that whenever we define our application, it does not really execute itself,
+  but constructs an abstract syntax tree that describes the application that we can run later.
+* With Free Monad, we can build the computation blueprint, and run it on different interpreter
+* Doobie represents its SQL queries with free objects, which means that they are just data structure
+  that specify the computation to be performed against a database.
+  It's just a description of the computation and not the computation itself, we can either run it or
+  do anything else with it.
+
+### setup kind-projector in build.sbt
+Note: for multi-project builds - put addCompilerPlugin clause into settings section for each sub-project.
+```
+.settings(
+    addCompilerPlugin("org.typelevel" % "kind-projector" % "0.13.3" cross CrossVersion.full),
+    libraryDependencies ++= Seq(
+      "org.scalaz" %% "scalaz-core" % "7.3.8",
+      "org.scalaz" %% "scalaz-effect" % "7.3.8"
+    ) ++ testLibs
+  )
+
+``

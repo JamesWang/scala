@@ -22,7 +22,7 @@ lazy val testLibs = Seq(
 )
 
 lazy val common = project.settings(
-  addCompilerPlugin( "org.typelevel" %% "kind-projector" % "0.10.3"),
+  addCompilerPlugin("org.typelevel" % "kind-projector" % "0.13.3" cross CrossVersion.full),
   libraryDependencies ++= Seq(
     "org.typelevel" %% "simulacrum" % "1.0.1",
     "eu.timepit" %% "refined-scalaz" % "0.11.2",
@@ -34,7 +34,7 @@ lazy val roundOne = (project in file("round-one"))
   .dependsOn(common)
   .settings(commonSettings *)
   .settings(
-    addCompilerPlugin( "org.typelevel" %% "kind-projector" % "0.10.3"),
+    addCompilerPlugin("org.typelevel" % "kind-projector" % "0.13.3" cross CrossVersion.full),
     libraryDependencies ++= Seq(
       "org.scalaz" %% "scalaz-core" % "7.3.8",
       "org.scalaz" %% "scalaz-effect" % "7.3.8"
