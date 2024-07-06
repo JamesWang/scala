@@ -92,4 +92,16 @@ Note: for multi-project builds - put addCompilerPlugin clause into settings sect
     ) ++ testLibs
   )
 
-``
+```
+
+### Functor
+* map on Functor is a way of sequencing computations on values
+* Future
+  Future is a functor that sequences asynchronous computation by queueing them and applying them as their 
+  predecessors complete
+* Single argument functions are functors
+* Function composition is sequencing (map)
+
+### Contravariant Functor
+* contramap only makes sense for data types that represent transformations
+* 
