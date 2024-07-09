@@ -104,4 +104,15 @@ Note: for multi-project builds - put addCompilerPlugin clause into settings sect
 
 ### Contravariant Functor
 * contramap only makes sense for data types that represent transformations
-* 
+
+### Partial Unification
+The partial unification in the Scala compiler works by fixing type parameters
+from left to right:
+```
+type F[A] = Int => A
+type F[A] = A => Double
+```
+In the above example, the compiler fixes the Int in **`Int =>Double`** and 
+looks for a Functor for functions of type `Int => ?`
+
+Partial unification is the default behaviour in Scala 2.13

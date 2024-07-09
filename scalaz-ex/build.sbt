@@ -10,7 +10,7 @@ lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
   scalacOptions ++= Seq(
     "-Ymacro-annotations",
-    "-Ypartial-unification",
+//    "-Ypartial-unification", //default in 2.13+
     "-language:higherKinds"
   ),
 )
