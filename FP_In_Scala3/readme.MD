@@ -95,3 +95,62 @@ to
               }
             }
 ```
+### Abstract Members
+* Abstract Val
+  - an abstract val constrains its legal implementation: Any
+    implementation must be a val definition; **_it may not be a var or a def_**
+* Abstract Method
+  - Abstract method declarations, on the other hand, may be implemented by
+    both concrete method definitions and concrete val definitions
+
+### Initializing abstract Vals
+```
+    new RationalTgrait:
+      val numerArg = 1
+      val denomArg = 2
+```
+* This expression yield an instance of an anonymous class that mixes in the trait and 
+  is defined by the body
+* `expr1` and `expr2` are evaluated as part of the initialization of the anonymous class,
+  but the _anonymous class_ is initialized **_after_** the **RationalTrait**, so `numerArg`
+  and `denomArg` are not available during the initialization of RationalTrait,
+* Initialization order is not the same for class parameters and abstract fields.
+  * Class parameter is evaluated before passed to the class constructor(unless by-name)
+  * An implementing val definition in a subclass is evaluated only after the superclass 
+    has been initialized
+* Trait parametric fields let you compute values for fields of a trait before 
+  the trait itself is initialized 
+
+```
+  trait RationalTrait(val numerArg: Int, val denomArg: Int):
+```
+
+### Lazy val
+* a lazy val is never evaluated more than once. (its value is memoized)
+
+### Akka Un-Typed Actors
+* In Akka untyped, an actor is any object that is subclass of an abstract **Actor**
+* And overrides `def receive: PartialFunction[Any, Unit]` method
+### Akka Typed Actors
+* Any well-defined behavior is a computation entity and thus can be declared to be an **Actor**
+* The well-defined behavior in Akka is: `Behavior`, it limits the actors to receiving messages 
+  of specific type only; the return type of the actor's behavior is required to be 
+  the next `Behavior` of the same type with respect to inheritance
+  * This way, it is possible to ensure at compile time that the actor will receive only messages 
+    of the type it declares to handle
+* Dispatchers make up the machinery that runs behaviors. Dispatchers use
+  ExecutorServices to assign threads to actors 
+* Akka Typed only supports the dispatchers definition from the
+  configuration. Properties of the default dispatcher can be changed by
+  overriding the settings under akka.actor.default-dispatcher .
+* Actor addresses also need to be typed, and the type of address needs to be known at compile time
+* Signal message types, which represent events in the life cycle of an actor and replace dedicated callback methods that were
+  exposed by the Actor class in untyped Akka
+
+### JDK-22 + Scala-3 + SBT
+* Upgrade Scala 3 to 3.4.* (did not find 3.3.4 in maven repository)
+* Upgrade SBT to 1.10.0 (build.properties)
+* Reload SBT project
+* All warnings, errors must be fixed, otherwise will see:
+  _**No warnings can be incurred under -Werror (or -Xfatal-warnings)**_
+
