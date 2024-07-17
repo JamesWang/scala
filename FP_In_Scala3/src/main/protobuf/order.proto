@@ -1,0 +1,21 @@
+syntax = "proto3";
+option go_package = "Github/jameswang/go/order";
+
+message CreateOrderRequest {
+  int64 user_id = 1;
+  repeated Item item = 2;
+  float total_price = 3;
+}
+
+
+message Item {
+  string name = 1;
+}
+
+message CreateOrderResponse {
+  int64 order_id = 1;
+}
+
+service Order {
+  rpc create(CreateOrderRequest) returns (CreateOrderResponse) {}
+}
