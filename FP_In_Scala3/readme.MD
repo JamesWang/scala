@@ -154,3 +154,8 @@ to
 * All warnings, errors must be fixed, otherwise will see:
   _**No warnings can be incurred under -Werror (or -Xfatal-warnings)**_
 
+### Leverage Java 19+ structured concurrency with OX 
+* Once the code block passed to the scope completes, any daemon forks that are still running are interrupted
+* Lifecycle of forks has predicatable boundaries
+
+
