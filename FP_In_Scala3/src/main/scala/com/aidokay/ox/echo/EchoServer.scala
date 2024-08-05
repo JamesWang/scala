@@ -1,10 +1,10 @@
-package com.aidokay.ox.chat
+package com.aidokay.ox.echo
 
 import ox.ExitCode.Success
 import ox.channels.Channel
 import ox.{ExitCode, Ox, OxApp, fork}
-import sttp.tapir.*
 import sttp.shared.Identity
+import sttp.tapir.*
 import sttp.tapir.CodecFormat.*
 import sttp.tapir.server.netty.sync.{NettySyncServer, OxStreams}
 
