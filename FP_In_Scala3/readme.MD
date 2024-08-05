@@ -157,5 +157,17 @@ to
 ### Leverage Java 19+ structured concurrency with OX 
 * Once the code block passed to the scope completes, any daemon forks that are still running are interrupted
 * Lifecycle of forks has predicatable boundaries
+```
+  def forkComputation(p: Int)(using Ox): Fork[Int] = fork {
+    sleep(p.seconds)
+    p + 1
+  }
+  
+  supervised {
+    val f1 = forkComputation(2)
+    val f2 = forkComputation(4)
+    (f1.join(), f2.join())
+  }
+```
 
 
