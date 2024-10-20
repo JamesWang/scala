@@ -154,6 +154,15 @@ to
 * All warnings, errors must be fixed, otherwise will see:
   _**No warnings can be incurred under -Werror (or -Xfatal-warnings)**_
 
+### Refined type
+* refinements are subtyping without naming the subtype.
+
+```scala 3
+    val subject : Service & Logging = new Service with Logging:
+      def start(): Unit = log("starting!")
+      
+```
+=======
 ### Leverage Java 19+ structured concurrency with OX 
 * Once the code block passed to the scope completes, any daemon forks that are still running are interrupted
 * Lifecycle of forks has predicatable boundaries
@@ -169,5 +178,4 @@ to
     (f1.join(), f2.join())
   }
 ```
-
 
