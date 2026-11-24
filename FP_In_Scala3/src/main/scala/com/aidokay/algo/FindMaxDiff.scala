@@ -9,11 +9,12 @@ object FindMaxDiff {
     @tailrec
     def findMaxDiff(max: Int, diff: Int, as: List[Int]): Int = as match
       case Nil => diff
-      case h :: t if h > max => findMaxDiff(h, diff, t)
+      case h :: t =>if h > max => findMaxDiff(h, diff, t)
       case h :: t => findMaxDiff(max, Math.max(diff, max - h), t)
 
-    val rev = list.reverse
-    findMaxDiff(Int.MinValue, rev.head, rev.tail)
+    list.reverse match
+      case Nil => 0
+      case first :: tail => findMaxDiff(first, 0, tail)
 
   //2 - Generic way
   def maxDiff[T: Ordering : Numeric](list: List[T], min: T): T =
@@ -23,8 +24,9 @@ object FindMaxDiff {
       case h :: t if Ordering[T].compare(h, max) > 0 => findMaxDiff(h, diff, t)
       case h :: t => findMaxDiff(max, Numeric[T].max(diff, Numeric[T].minus(max, h)), t)
 
-    val rev = list.reverse
-    findMaxDiff(min, rev.head, rev.tail)
+    list.reverse match
+      case Nil => 0
+      case first :: tail => findMaxDiff(min, first, tail)
 
 
   //3 - with Max/Min Pair
@@ -36,7 +38,9 @@ object FindMaxDiff {
       case h::t =>
         val nMaxDiff = Numeric[T].max(diff, Numeric[T].minus(max, h))
         findMaxDiff(max, nMaxDiff, t, if Numeric[T].compare(nMaxDiff, diff) != 0 then (h, max) else pair)
-
-    val rev = list.reverse
-    findMaxDiff(min, rev.head, rev.tail, (min, min))
+  
+    list.reverse match
+      case Nil => 0
+      case first :: tail => findMaxDiff(first, min, tail)
+  
 }
